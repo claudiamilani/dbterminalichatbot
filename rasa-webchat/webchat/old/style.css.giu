@@ -1,0 +1,118 @@
+/* Stili generali per il corpo della pagina */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Contenitore principale della chat */
+#chat-container {
+    width: 400px;  /* Larghezza fissa per la chat */
+    height: 600px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Contenitore dei messaggi */
+#chat-box {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%; /* Assicurati che il contenitore occupi tutta la larghezza disponibile */
+}
+
+/* Messaggi dell'utente */
+.user-message {
+    background-color: #e1e6f1;
+    color: #444;
+    padding: 12px;
+    border-radius: 20px;
+    font-size: 16px;
+    line-height: 1.5;
+    width: auto;
+    max-width: 80%;
+    margin-bottom: 12px;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Messaggi del bot */
+.bot-message {
+    background-color: #007bff;
+    color: white;
+    padding: 12px;
+    border-radius: 20px;
+    font-size: 16px;
+    line-height: 1.5;
+    width: auto;
+    max-width: 80%;
+    margin-bottom: 12px;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Barra di input */
+#user-input-container {
+    display: flex;
+    padding: 10px;
+    background-color: #fff;
+    border-top: 1px solid #ddd;
+    width: 100%;  /* Imposta la larghezza a 100% per allinearlo alla larghezza della chat */
+}
+
+/* Campo di input per il messaggio */
+#user-input {
+    flex-grow: 1;
+    padding: 12px 15px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    outline: none;
+    transition: border-color 0.3s;
+    width: 100%; /* Assicurati che l'input occupi tutta la larghezza */
+}
+
+/* Effetto hover sul campo di input */
+#user-input:focus {
+    border-color: #007bff;
+}
+
+/* Pulsante per inviare il messaggio */
+#send-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    margin-left: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+/* Effetto hover sul pulsante */
+#send-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Animazione per i messaggi */
+.messages li.enter {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.messages li.enter.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+

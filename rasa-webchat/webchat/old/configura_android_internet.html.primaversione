@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guida alla Connessione Dati</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #333;
+        }
+        ol {
+            margin-left: 20px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        p {
+            margin-left: 20px;
+        }
+        .step-title {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Guida per Configurare la Connessione Dati</h1>
+    <ol>
+        <li>
+            <span class="step-title">Verifica di avere una connessione dati attiva</span>
+            <p>Assicurati che il tuo piano dati sia attivo e che non ci siano blocchi o limitazioni sul tuo account con l'operatore. Verifica che il telefono non sia in modalità "Aereo" (che disabilita tutte le connessioni di rete).</p>
+        </li>
+        <li>
+            <span class="step-title">Accedi alle Impostazioni</span>
+            <p>Vai su "Impostazioni". Scorri fino alla sezione "Reti mobili" o "Connessioni" (il nome potrebbe variare a seconda del dispositivo e della versione di Android).</p>
+        </li>
+        <li>
+            <span class="step-title">Attiva i Dati Mobili</span>
+            <p>Se non lo hai già fatto, attiva "Dati mobili" per abilitare la connessione internet tramite la rete cellulare.</p>
+        </li>
+        <li>
+            <span class="step-title">Configurazione APN (Access Point Name)</span>
+            <p>Se il tuo telefono non si collega automaticamente a Internet, potrebbe essere necessario configurare manualmente l'APN (Access Point Name), che è il punto di accesso del tuo operatore.</p>
+            <p>Nelle Impostazioni, vai su "Reti mobili" &gt; "Nomi punti di accesso" (APN).</p>
+            <p>A questo punto, vedrai una lista di APN già configurati, ma se manca o se desideri aggiungerne uno nuovo, tocca "Aggiungi" o "Nuovo APN".</p>
+            <p>Inserisci le informazioni fornite dal tuo operatore (ogni operatore ha le proprie impostazioni per APN). Tipicamente dovrai inserire:</p>
+            <ul>
+                <li><strong>Nome:</strong> Nome del punto di accesso (esempio: "Vodafone Internet")</li>
+                <li><strong>APN:</strong> (esempio: "web.omnitel.it" per Vodafone in Italia)</li>
+                <li><strong>MMSC:</strong> (se richiesto dal tuo operatore)</li>
+                <li><strong>MCC e MNC:</strong> Di solito vengono automaticamente compilati.</li>
+                <li><strong>Tipo di APN:</strong> Impostalo su "default" o "internet".</li>
+            </ul>
+            <p>Una volta inserito tutto, salva le modifiche e seleziona il nuovo APN come predefinito.</p>
+        </li>
+        <li>
+            <span class="step-title">Verifica la Connessione</span>
+            <p>Una volta configurato l'APN, prova ad aprire un browser (come Chrome) e navigare su un sito per verificare che Internet funzioni correttamente. Se non riesci a connetterti, prova a riavviare il dispositivo.</p>
+        </li>
+    </ol>
+</body>
+</html>
+

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chatbot Rasa</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f7f9fc;
+      margin: 0;
+      padding: 0;
+    }
+
+    .chat-container {
+      width: 400px;
+      max-width: 100%;
+      height: 600px;
+      margin: 50px auto;
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-box {
+      flex-grow: 1;
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .messages {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .messages li {
+      display: flex;
+      align-items: center;
+      max-width: 80%;
+      margin-bottom: 12px;
+      padding: 12px;
+      border-radius: 20px;
+      font-size: 16px;
+      line-height: 1.5;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .messages li.user-message {
+      background-color: #e1e6f1;
+      color: #444;
+      align-self: flex-start;
+      border-radius: 20px 20px 0 20px;
+    }
+
+    .messages li.bot-message {
+      background-color: #007bff;
+      color: white;
+      align-self: flex-end;
+      border-radius: 20px 20px 20px 0;
+    }
+
+    .input-container {
+      display: flex;
+      padding: 10px;
+      background-color: #fff;
+      border-top: 1px solid #ddd;
+    }
+
+    .input-container input {
+      flex-grow: 1;
+      padding: 12px 15px;
+      font-size: 16px;
+      border: 1px solid #ddd;
+      border-radius: 20px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    .input-container input:focus {
+      border-color: #007bff;
+    }
+
+    .input-container button {
+      background-color: #007bff;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      margin-left: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .input-container button:hover {
+      background-color: #0056b3;
+    }
+
+    .typing-indicator {
+      font-style: italic;
+      color: #888;
+      margin-top: 10px;
+      display: none;
+    }
+
+    /* Animazione per i messaggi */
+    .messages li.enter {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .messages li.enter.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="chat-container">
+    <div class="chat-box">
+      <ul id="messages" class="messages"></ul>
+      <div id="typing-indicator" class="typing-indicator">Bot sta scrivendo...</div>
+    </div>
+
+    <div class="input-container">
+      <input type="text" id="user_input" placeholder="Scrivi un messaggio..." />
+      <button onclick="sendMessage()">Invia</button>
+    </div>
+  </div>
+
+  <script>
+    function sendMessage() {
+      const userMessage = document.getElementById('user_input').value;
+      if (userMessage.trim()) {
+        displayMessage(userMessage, 'user');
+        document.getElementById('typing-indicator').style.display = "block";
+
+        // Invia il messaggio al webhook
+        fetch('http://localhost:5005/webhooks/rest/webhook', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ sender: 'user', message: userMessage })
+        })
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('typing-indicator').style.display = "none";
+          if (data && data.length > 0) {
+            data.forEach(msg => {
+              displayMessage(msg.text, 'bot');
+            });
+          }
+        })
+        .catch(error => {
+          console.error('Errore:', error);
+          document.getElementById('typing-indicator').style.display = "none";
+        });
+
+        document.getElementById('user_input').value = ''; // Resetta l'input
+      }
+    }
+
+    // Funzione per visualizzare i messaggi con animazione
+    function displayMessage(message, sender) {
+      const messagesList = document.getElementById('messages');
+      const messageElement = document.createElement('li');
+      messageElement.classList.add(sender === 'user' ? 'user-message' : 'bot-message');
+      messageElement.textContent = message;
+      messageElement.classList.add('enter');
+      messagesList.appendChild(messageElement);
+      setTimeout(() => {
+        messageElement.classList.add('show');
+      }, 100);
+      messagesList.scrollTop = messagesList.scrollHeight; // Scroll verso l'ultimo messaggio
+    }
+
+  </script>
+</body>
+</html>
+

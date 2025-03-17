@@ -1,0 +1,327 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mdm-mdmconsole
+  namespace: mdm-vas
+spec:
+  selector:
+    matchLabels:
+      app: mdm-mdmconsole
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mdm-mdmconsole
+      annotations:
+        proxy.istio.io/config: '{ "holdApplicationUntilProxyStarts": true }'
+    spec:
+      serviceAccountName: sa-vas-prod
+      imagePullSecrets:
+        - name: registry-secret
+      containers:
+        - name: app
+          image: europe-west3-docker.pkg.dev/w3-core-gke-p-prj-4a34/vas-p-docker-repo/mdm-dbterminali/app:latest
+          imagePullPolicy: Always
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - "/bin/bash"
+                  - "-c"
+                  - "/var/www/html/.k8s/scripts/appPostStart.sh > /var/www/html/storage/logs/postStart.log 2>&1"
+          envFrom:
+            - configMapRef:
+                name: mdm-dbterminali-common
+          ports:
+            - containerPort: 9000
+              name: php-fpm-port
+          volumeMounts:
+            - name: vas-mdm-awsmi-pvc-01
+              mountPath: /var/www/html/storage
+            - name: aws-iam-token
+              mountPath: /var/run/secrets/aws-iam-token/serviceaccount
+              readOnly: true
+        - name: web
+          image: europe-west3-docker.pkg.dev/w3-core-gke-p-prj-4a34/vas-p-docker-repo/mdm-dbterminali/web:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+              name: web-http-port
+          volumeMounts:
+            - name: vas-mdm-awsmi-pvc-01
+              mountPath: /var/www/html/storage
+      volumes:
+        - name: vas-mdm-awsmi-pvc-01
+          persistentVolumeClaim:
+            claimName: vas-mdm-awsmi-pvc-01
+        - name: aws-iam-token
+          projected:
+            defaultMode: 420
+            sources:
+              - serviceAccountToken:
+                  audience: sts.amazonaws.com
+                  expirationSeconds: 86400
+                  path: token
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mdm-mdmconsole
+  namespace: mdm-vas
+spec:
+  selector:
+    app: mdm-mdmconsole
+  ports:
+    - name: service-port
+      protocol: TCP
+      port: 80
+      targetPort: web-http-port
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: mdm-mdmconsole
+  namespace: mdm-vas
+spec:
+  selector:
+    istio: mdm-vas-01-istio-inggtw
+  servers:
+    - port:
+        number: 443
+        name: https
+        protocol: HTTPS
+      tls:
+        mode: SIMPLE
+        credentialName: certificate-mdm-vas-mdmint
+      hosts:
+        - "mdminternal.aws.windtre.it"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: mdm-mdmconsole
+  namespace: mdm-vas
+spec:
+  hosts:
+    - "mdminternal.aws.windtre.it"
+  gateways:
+    - mdm-mdmconsole
+  http:
+    - match:
+        - uri:
+            prefix: /management-platform
+      route:
+        - destination:
+            host: mtmp-service.mdm-vas.svc.cluster.local
+            port:
+              number: 8080
+    - match:
+        - uri:
+            prefix: /management
+      route:
+        - destination:
+            host: mtmp-service.mdm-vas.svc.cluster.local
+            port:
+              number: 9990
+    - match:
+        - port: 443
+      rewrite:
+        uri: "/"
+      route:
+        - destination:
+            host: mdm-mdmconsole.mdm-vas.svc.cluster.local
+            port:
+              number: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mdm-ingestionfile
+  namespace: mdm-vas
+spec:
+  selector:
+    matchLabels:
+      app: mdm-ingestionfile
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mdm-ingestionfile
+      annotations:
+        proxy.istio.io/config: '{ "holdApplicationUntilProxyStarts": true }'
+    spec:
+      serviceAccountName: sa-vas-prod
+      imagePullSecrets:
+        - name: registry-secret
+      containers:
+        - name: scheduler
+          image: europe-west3-docker.pkg.dev/w3-core-gke-p-prj-4a34/vas-p-docker-repo/mdm-dbterminali/app:latest
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: mdm-dbterminali-common
+          volumeMounts:
+            - name: vas-mdm-awsmi-pvc-01
+              mountPath: /var/www/html/storage
+            - name: aws-iam-token
+              mountPath: /var/run/secrets/aws-iam-token/serviceaccount
+              readOnly: true
+          command:
+            - php
+          args:
+            - artisan
+            - schedule:work
+        - name: horizon
+          image: europe-west3-docker.pkg.dev/w3-core-gke-p-prj-4a34/vas-p-docker-repo/mdm-dbterminali/app:latest
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: mdm-dbterminali-common
+          volumeMounts:
+            - name: vas-mdm-awsmi-pvc-01
+              mountPath: /var/www/html/storage
+            - name: aws-iam-token
+              mountPath: /var/run/secrets/aws-iam-token/serviceaccount
+              readOnly: true
+          command:
+            - php
+          args:
+            - artisan
+            - horizon
+      volumes:
+        - name: vas-mdm-awsmi-pvc-01
+          persistentVolumeClaim:
+            claimName: vas-mdm-awsmi-pvc-01
+        - name: aws-iam-token
+          projected:
+            defaultMode: 420
+            sources:
+              - serviceAccountToken:
+                  audience: sts.amazonaws.com
+                  expirationSeconds: 86400
+                  path: token
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mdm-dbterminali
+  namespace: mdm-vas
+spec:
+  selector:
+    matchLabels:
+      app: mdm-dbterminali
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mdm-dbterminali
+      annotations:
+        proxy.istio.io/config: '{ "holdApplicationUntilProxyStarts": true }'
+    spec:
+      serviceAccountName: sa-vas-prod
+      imagePullSecrets:
+        - name: registry-secret
+      containers:
+        - name: app
+          image: europe-west3-docker.pkg.dev/w3-core-gke-p-prj-4a34/vas-p-docker-repo/mdm-dbterminali/app:latest
+          imagePullPolicy: Always
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - "/bin/bash"
+                  - "-c"
+                  - "/var/www/html/.k8s/scripts/appPostStart.sh > /var/www/html/storage/logs/postStart.log 2>&1"
+          envFrom:
+            - configMapRef:
+                name: mdm-dbterminali-common
+          ports:
+            - containerPort: 9000
+              name: php-fpm-port
+          volumeMounts:
+            - name: vas-mdm-awsmi-pvc-01
+              mountPath: /var/www/html/storage
+            - name: aws-iam-token
+              mountPath: /var/run/secrets/aws-iam-token/serviceaccount
+              readOnly: true
+        - name: web
+          image: europe-west3-docker.pkg.dev/w3-core-gke-p-prj-4a34/vas-p-docker-repo/mdm-dbterminali/web:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+              name: web-http-port
+          volumeMounts:
+            - name: vas-mdm-awsmi-pvc-01
+              mountPath: /var/www/html/storage
+      volumes:
+        - name: vas-mdm-awsmi-pvc-01
+          persistentVolumeClaim:
+            claimName: vas-mdm-awsmi-pvc-01
+        - name: aws-iam-token
+          projected:
+            defaultMode: 420
+            sources:
+              - serviceAccountToken:
+                  audience: sts.amazonaws.com
+                  expirationSeconds: 86400
+                  path: token
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mdm-dbterminali
+  namespace: mdm-vas
+spec:
+  selector:
+    app: mdm-dbterminali
+  ports:
+    - name: service-port
+      protocol: TCP
+      port: 80
+      targetPort: web-http-port
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: mdm-dbterminali
+  namespace: mdm-vas
+spec:
+  selector:
+    istio: mdm-vas-02-istio-inggtw
+  servers:
+    - port:
+        number: 443
+        name: https
+        protocol: HTTPS
+      tls:
+        mode: SIMPLE
+        credentialName: certificate-mdm-vas-mdm
+      hosts:
+        - "mdm.windtre.it"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: mdm-dbterminali
+  namespace: mdm-vas
+spec:
+  hosts:
+    - "mdm.windtre.it"
+  gateways:
+    - mdm-dbterminali
+  http:
+    - match:
+        - port: 443
+      route:
+        - destination:
+            host: mdm-dbterminali.mdm-vas.svc.cluster.local
+            port:
+              number: 80
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: sa-vas-prod
+  namespace: mdm-vas
