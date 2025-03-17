@@ -15,9 +15,9 @@ services:
     build:
       context: .
       dockerfile: .docker/php/Dockerfile
-    image: pantheon.medialogic.it:5050/php/laravel/dbterminali/php:8.3-fpm-bookworm
     user: ${UID:-1000}:${GID:-1000}
     volumes:
+      - .env:/var/www/html/.env:delegated
       - .:/var/www/html:delegated
       - .docker/php/php.ini:/usr/local/etc/php/conf.d/custom.ini:delegated
     links:
@@ -33,11 +33,6 @@ services:
       DB_PORT: ${DB_PORT:-5432}
       REDIS_HOST: redis
       REDIS_PORT: ${REDIS_PORT:-6379}
-      #    deploy:
-      #      resources:
-      #        limits:
-      #          memory: 256M
-      #          cpus: "0.2"
   scheduler:
     build:
       context: .
@@ -59,11 +54,6 @@ services:
       DB_PORT: ${DB_PORT:-5432}
       REDIS_HOST: redis
       REDIS_PORT: ${REDIS_PORT:-6379}
-      #    deploy:
-      #      resources:
-      #        limits:
-      #          memory: 256M
-      #          cpus: "0.2"
     entrypoint: sh -c "php artisan schedule:work"
   horizon:
     build:
@@ -86,11 +76,6 @@ services:
       DB_PORT: ${DB_PORT:-5432}
       REDIS_HOST: redis
       REDIS_PORT: ${REDIS_PORT:-6379}
-      #    deploy:
-      #      resources:
-      #        limits:
-      #          memory: 256M
-      #          cpus: "0.2"
     entrypoint: sh -c "php artisan horizon"
   pgsql:
     image: postgres:16-alpine
@@ -111,12 +96,44 @@ services:
     volumes:
       - redis_data:/data
   node:
-    image: node:12.14.0-stretch
+    image: node:12-alpine
     user: ${UID:-1000}:${GID:-1000}
     profiles: [ "cli-only" ]
     working_dir: /srv/app
     volumes:
       - .:/srv/app:delegated
+  rasa-actions:
+    build:
+      context: .
+      dockerfile: .docker/dbtermrasa/Dockerfile.rasa-actions
+    volumes:
+      - ./dbtermrasa/actions:/app/actions
+      - ./dbtermrasa/endpoints.yml:/app/endpoints.yml
+    ports:
+      - "5055:5055"
+    command: start --actions actions
+  rasa:
+    image: rasa/rasa:latest
+    volumes:
+      - ./dbtermrasa:/app
+    ports:
+      - "5005:5005"  
+    entrypoint: ["sh", "-c", "echo 'Attendo 5 secondi prima di avviare Rasa...'; sleep 5; rasa run --enable-api --model /app/models/20241230-204258-intricate-ice.tar.gz --cors '*' --debug"]
+    depends_on:
+      - pgsql
+      - redis
+      - rasa-actions
+  frontend:
+    build:
+      context: .
+      dockerfile: .docker/frontend/frontend.Dockerfile
+    ports:
+      - "8080:80"  
+    depends_on:
+      - rasa
+
+
 volumes:
   pgsql_data:
   redis_data:
+  rasa_project:
