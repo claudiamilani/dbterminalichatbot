@@ -1,0 +1,7 @@
+* text=auto
+*.css linguist-vendored
+*.scss linguist-vendored
+*.js linguist-vendored
+/.docker export-ignore
+docker-compose.yml export-ignore
+CHANGELOG.md export-ignore

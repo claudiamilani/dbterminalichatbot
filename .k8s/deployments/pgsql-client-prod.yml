@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pgsql-client
+spec:
+  selector:
+    matchLabels:
+      app: pgsql-client
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: pgsql-client
+      annotations:
+        proxy.istio.io/config: '{ "holdApplicationUntilProxyStarts": true }'
+    spec:
+      containers:
+        - name: pgsql-client
+          image: europe-west3-docker.pkg.dev/w3-core-gke-p-prj-4a34/vas-p-docker-repo/mdm-dbterminali/pgsql-client
+          imagePullPolicy: Always
+          resources:
+            requests:
+              cpu: 500m
+              memory: 128Mi
+            limits:
+              cpu: 1000m
+              memory: 1024Mi

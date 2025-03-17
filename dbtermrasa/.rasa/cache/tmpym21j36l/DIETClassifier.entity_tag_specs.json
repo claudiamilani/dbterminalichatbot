@@ -1,0 +1,20 @@
+[
+  {
+    "tag_name": "entity",
+    "ids_to_tags": {
+      "1": "B-device_make",
+      "2": "I-device_make",
+      "3": "L-device_make",
+      "4": "U-device_make",
+      "0": "O"
+    },
+    "tags_to_ids": {
+      "B-device_make": 1,
+      "I-device_make": 2,
+      "L-device_make": 3,
+      "U-device_make": 4,
+      "O": 0
+    },
+    "num_tags": 5
+  }
+]

@@ -1,0 +1,51 @@
+version: "3.1"
+
+intents:
+  - greet
+  - choose_option
+  - select_brand
+
+entities:
+  - device_make
+  - device_model
+  - option
+
+slots:
+  option:
+    type: any
+    mappings:
+      - type: from_intent
+        intent: choose_option
+        value: "option_1"
+      - type: from_intent
+        intent: choose_option
+        value: "option_2"
+      - type: from_intent
+        intent: choose_option
+        value: "option_3"
+
+  device_make:
+    type: any
+    mappings:
+      - type: from_entity
+        entity: device_make
+        conditions:
+          - active_loop: null  # Assicurati che lo slot sia attivo
+
+  device_model:
+    type: any
+    mappings:
+      - type: from_entity
+        entity: device_model
+
+responses:
+  utter_greet:
+    - text: |
+        Ciao, sono il tuo assistente personale. Posso esserti utile per:
+        1. Capire le marche e i modelli più venduti dal 2023
+        2. Fornirti l'elenco delle caratteristiche tecniche del sistema e cercare una caratteristica per un determinato modello
+        3. Fornirti delle procedure per configurare il tuo telefonino
+
+actions:
+  - action_query_brands
+  - action_query_models

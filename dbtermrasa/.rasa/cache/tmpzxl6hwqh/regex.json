@@ -1,0 +1,30 @@
+[
+  {
+    "name": "device_name",
+    "pattern": "Google Pixel"
+  },
+  {
+    "name": "device_name",
+    "pattern": "Samsung"
+  },
+  {
+    "name": "device_name",
+    "pattern": "Xiaomi"
+  },
+  {
+    "name": "device_name",
+    "pattern": "iPhone"
+  },
+  {
+    "name": "feature",
+    "pattern": "caratteristiche"
+  },
+  {
+    "name": "feature",
+    "pattern": "fotocamera"
+  },
+  {
+    "name": "feature",
+    "pattern": "fotocamere"
+  }
+]

@@ -1,0 +1,74 @@
+Marche di cellulari più prodotti/venduti 
+SELECT device_make
+FROM public."DWH_TRASPOSTA"
+WHERE dcr_status = 'Mobilethink verified, GSMA and external data'
+GROUP BY device_make
+order by count(tac) desc
+LIMIT 15;
+
+Modelli di cellulare più prodotti/venduti di una determinata marca
+
+SELECT device_model FROM public."DWH_TRASPOSTA"
+where device_make = 'Samsung'
+and dcr_status = 'Mobilethink verified, GSMA and external data'
+group by device_model
+order by count(tac) desc
+LIMIT 15;
+
+
+Seleziona le categorie:
+
+SELECT
+	distinct(AC.NAME) CATEGORY
+FROM
+	TERMINALS T
+	JOIN ATTRIBUTE_VALUES AV ON T.ID = AV.TERMINAL_ID
+	JOIN DBT_ATTRIBUTES A ON AV.DBT_ATTRIBUTE_ID = A.ID
+	JOIN ATTR_CATEGORIES AC ON A.ATTR_CATEGORY_ID = AC.ID
+	JOIN VENDORS V ON T.VENDOR_ID = V.ID
+WHERE
+	T.PUBLISHED = TRUE
+	AND T.CERTIFIED = TRUE
+	AND A.PUBLISHED = TRUE;
+
+
+
+Elenco descrizione, valore per Modello
+risultato: Attributi:Valore per modello
+
+SELECT
+        distinct(A.DESCRIPTION, AV.VALUE) ATTRIBUTO
+FROM
+        TERMINALS T
+        JOIN ATTRIBUTE_VALUES AV ON T.ID = AV.TERMINAL_ID
+        JOIN DBT_ATTRIBUTES A ON AV.DBT_ATTRIBUTE_ID = A.ID
+        JOIN ATTR_CATEGORIES AC ON A.ATTR_CATEGORY_ID = AC.ID
+        JOIN VENDORS V ON T.VENDOR_ID = V.ID
+WHERE
+        T.PUBLISHED = TRUE
+        AND T.CERTIFIED = TRUE
+        AND A.PUBLISHED = TRUE
+        AND AC.NAME = 'display'
+		AND AV.INGESTION_SOURCE_ID = 2
+		AND T.NAME like '%A57s%'
+
+
+
+
+Elenco Attributi per categoria
+risultato per categoria Attributi:Valore 
+
+SELECT
+        distinct(A.DESCRIPTION, AV.VALUE) ATTRIBUTO
+FROM
+        TERMINALS T
+        JOIN ATTRIBUTE_VALUES AV ON T.ID = AV.TERMINAL_ID
+        JOIN DBT_ATTRIBUTES A ON AV.DBT_ATTRIBUTE_ID = A.ID
+        JOIN ATTR_CATEGORIES AC ON A.ATTR_CATEGORY_ID = AC.ID
+        JOIN VENDORS V ON T.VENDOR_ID = V.ID
+WHERE
+        T.PUBLISHED = TRUE
+        AND T.CERTIFIED = TRUE
+        AND A.PUBLISHED = TRUE
+        AND AC.NAME = 'display'
+	AND AV.INGESTION_SOURCE_ID = 2

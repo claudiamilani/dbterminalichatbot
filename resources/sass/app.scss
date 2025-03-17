@@ -1,0 +1,29 @@
+/*!
+ * Copyright (c) 2024. Medialogic S.p.A.
+ */
+
+// Variables
+@import "variables";
+
+// Bootstrap
+@import '../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap';
+
+// Toastr
+@import '../../node_modules/toastr/toastr';
+
+// Select2
+@import '../../node_modules/select2/src/scss/core';
+
+//Select2 Bootstrap theme
+@import '../../node_modules/select2-bootstrap-theme/src/select2-bootstrap';
+
+// eonasdan-bootstrap-datetimepicker
+@import '../../node_modules/eonasdan-bootstrap-datetimepicker/src/sass/bootstrap-datetimepicker-build';
+
+// importing core styling file
+@import '@fortawesome/fontawesome-free/scss/fontawesome.scss';
+
+//  importing Font Awesome styles
+@import '@fortawesome/fontawesome-free/scss/solid.scss';
+@import '@fortawesome/fontawesome-free/scss/regular.scss';
+@import '@fortawesome/fontawesome-free/scss/brands.scss';

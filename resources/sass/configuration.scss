@@ -1,0 +1,483 @@
+/************************
+  GENERAL STYLES
+************************/
+$orange: #FF6900;
+$black: #000;
+$white: #FFF;
+$grey: #D9D9DA;
+$light_grey: #ccd1d9;
+$row_grey: #f9f9f9;
+$techlist-grey: #F4F4F4;
+
+$images-path: '/images/';
+
+html body {
+  margin: 0;
+  padding: 0;
+  background: $white;
+}
+
+.no-img {
+  img {
+    width: 250px;
+  }
+}
+
+.img {
+  img {
+    width: 100%
+  }
+}
+
+button {
+  cursor: pointer;
+}
+
+/***********************
+  MODAL STYLES
+***********************/
+#myModal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.75);
+  padding: 15px 0 0 0;
+
+  .modal-content {
+    background-color: $white;
+    margin: 0 auto;
+
+    table {
+      margin: 0;
+      padding: 5px;
+    }
+
+    button {
+      margin: 0;
+    }
+  }
+}
+
+/***********************/
+
+
+/************************
+  VAS STYLES
+************************/
+#vas {
+  * {
+    font-family: Verdana, serif !important;
+  }
+
+  .title {
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    padding: 2px;
+  }
+
+  table {
+    margin: 25px 0 0 5px;
+    width: 100%;
+  }
+
+  .float-right {
+    float: right;
+  }
+
+  button {
+    margin: 10px 10px 10px 0;
+    background: none;
+    border: none;
+  }
+
+  .border-box {
+    border-color: $orange;
+    border-style: solid;
+    border-width: 1px;
+    border-top-width: 2px;
+  }
+
+  /**************
+    MAIN FORM STYLES
+    (resources/views/vas_configs/index.blade.php)
+  **************/
+  #vas-config-container {
+    width: 454px;
+    margin: 3px 0 0 3px;
+
+    .title {
+      font-size: 14px;
+      color: $white;
+      background: $orange;
+      margin: 0 0 2px;
+    }
+  }
+
+  /**************
+    TECH SPECS STYLES
+    (resources/views/vas_configs/show.blade.php)
+  **************/
+  #tech-container {
+    .title {
+      font-size: 11px;
+      color: $black;
+      background: none;
+      margin: 15px 0;
+    }
+
+    .tech-title {
+      font-size: 14px;
+      color: $white;
+      background: $orange;
+      margin: 0 0 2px;
+    }
+
+    table {
+      margin: 0;
+      width: 100%;
+    }
+
+    .column-left {
+      width: 30%;
+      vertical-align: top;
+
+      img {
+        vertical-align: top;
+        display: block;
+        width: 100%;
+        object-fit: contain;
+      }
+    }
+
+    .column-right {
+      width: 70%;
+
+      .content {
+        font-size: 9px;
+        padding: 0 0 0 5px;
+        border-left: 1px solid $orange;
+      }
+    }
+
+    .text-spacing {
+      height: 20px;
+    }
+  }
+
+  /************************
+    CONFIGS & OTA STYLES
+    (resources/views/configuration/vas-techsheet.blade.php)
+  ************************/
+  #configs-ota-container {
+    .title {
+      margin: 15px 0 2px 0;
+    }
+
+    thead {
+      font-size: 9px;
+      font-weight: bold;
+    }
+
+    .first-column {
+      font-size: 11px;
+    }
+  }
+
+  /***********************
+  MODAL STYLES
+  ***********************/
+  #myModal {
+    .modal-content {
+      width: 450px;
+      font-size: 9px;
+
+      .modal-title {
+        font-size: 14px;
+        color: $white;
+        background: $orange;
+        margin: 0 0 2px 0;
+      }
+
+      table {
+        margin: 0;
+        padding: 5px;
+      }
+
+      button {
+        margin: 0;
+      }
+    }
+  }
+}
+
+/***********************/
+
+
+/************************
+  WINDTRE STYLES
+************************/
+#windtre {
+  * {
+    font-family: "Trebuchet MS", serif !important;
+    color: $black !important;
+  }
+
+  #windtre-config-container {
+    .no-gutters {
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      width: 650px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 25px 0 0 0;
+
+      .label {
+        font-size: 16px;
+        text-align: left;
+        font-weight: bold;
+      }
+
+      select, button {
+        width: 100%;
+        height: 32px;
+        border-radius: 4px;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+      }
+
+      select {
+        border: 1px solid $light_grey;
+        background: url(#{$images-path}arrow_bottom_orange.png) no-repeat 95% center;
+
+        &:focus {
+          border-color: $orange;
+          outline: none;
+        }
+      }
+
+      button {
+        background: $orange;
+        color: $white !important;
+        font-size: 16px;
+        font-weight: bold;
+        border: none;
+        padding: 0 10px;
+      }
+
+      .td-select {
+        width: 45%;
+      }
+
+      .td-button {
+        width: 10%;
+      }
+
+
+      /************************
+      CONFIGS & OTA STYLES
+      (resources/views/configuration/windtre-techsheet.blade.php)
+      ************************/
+      #configs-ota-container {
+        .title {
+          font-size: 18px;
+          font-weight: bold;
+          border-bottom: 1px solid $grey;
+          padding: 0 0 5px;
+        }
+
+        table td, table td * {
+          vertical-align: top;
+        }
+
+        table td {
+          padding: 5px;
+        }
+
+        .config-table tr:nth-child(even) {
+          background: $row_grey;
+        }
+
+        .h-spacing {
+          margin: 20px 0 0 0;
+        }
+
+        .column-left {
+          width: 30%;
+
+          .image {
+            font-size: 13px;
+            text-align: center;
+
+            img {
+              vertical-align: top;
+              display: block;
+              width: 100%;
+              object-fit: contain;
+              margin-bottom: 20px;
+            }
+
+            a {
+              color: $orange !important;
+              text-decoration: none;
+            }
+
+            a:hover {
+              text-decoration: underline;
+            }
+          }
+        }
+
+        .column-right {
+          width: 70%;
+
+          td:first-child {
+            width: 50%;
+          }
+
+          td {
+            width: 50%;
+          }
+        }
+      }
+    }
+  }
+
+  /***********************
+    MODAL STYLES
+  ***********************/
+  #myModal {
+    .modal-content {
+      background-color: $white;
+      margin: 0 auto;
+      width: 90%;
+      font-size: 14px;
+
+      table {
+        width: 100%;
+        margin: 0;
+        padding: 5px;
+      }
+
+      td {
+        width: 50%;
+
+        img {
+          display: block;
+          margin: 0 auto;
+        }
+
+        .button {
+          width: 80px;
+          margin: 10px auto;
+
+          button {
+            margin: 0;
+          }
+        }
+      }
+    }
+
+    .modal-title {
+      font-size: 18px;
+      color: $black;
+      background: $row_grey;
+      margin: 5px;
+      padding: 15px;
+    }
+
+    .content {
+      .text-spacing {
+        line-height: 2em;
+      }
+
+      .category-title,
+      .category-subtitle {
+        font-size: 14px;
+        font-weight: normal;
+        cursor: pointer;
+        margin: 10px 0 0 0;
+        padding: 10px 0 0 20px;
+        border-top: 1px solid $light_grey;
+        background: url(#{$images-path}arrow_right_orange.png) no-repeat left 10px;
+      }
+
+      .category-subtitle {
+        margin: 5px 0px;
+        padding: 5px 0 0 20px;
+        background: url(#{$images-path}arrow_right_small_orange.png) no-repeat left 10px;
+      }
+
+      .attribute-group {
+        margin: 15px 0 0 0;
+        padding: 5px 0 0 20px;
+        background: $techlist-grey;
+      }
+
+      .attribute-subgroup {
+        margin: 0;
+        padding: 0 0 10px 20px;
+      }
+
+      .ota-input {
+        display: flex;
+        align-items: center;
+        width: 60%;
+        margin: 0 auto;
+        gap: 10px;
+
+        span {
+          width: 10%;
+          text-align: right;
+        }
+
+        input {
+          width: 90%;
+          height: 40px;
+          font-size: 16px;
+          color: $black;
+          border-radius: 4px;
+          border: 1px solid $light_grey !important;
+          background-color: $white;
+          padding: 0 0 0 10px;
+
+          &::placeholder {
+            color: $light_grey;
+            opacity: 1;
+          }
+        }
+
+        button {
+          width: auto;
+          height: 44px;
+          padding: 0 20px;
+        }
+      }
+
+      .hint {
+        text-align: center;
+        font-size: 18px;
+      }
+
+      .modal-message {
+        text-align: center;
+      }
+
+      button {
+        width: auto;
+        float: right;
+      }
+    }
+  }
+}
+
+/***********************/

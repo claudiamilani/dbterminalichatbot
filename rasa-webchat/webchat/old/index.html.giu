@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webchat Rasa</title>
+    <!-- Link al file CSS per lo stile -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="chat-container">
+        <!-- Aggiungi una sezione di intestazione per la chat -->
+        <div id="chat-header">
+            Chat con il Bot
+        </div>
+        <div id="chat-box"></div>
+        <div id="user-input-container">
+            <input type="text" id="user-input" placeholder="Scrivi un messaggio..." />
+            <button id="send-btn">Invia</button>
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+</html>
+
