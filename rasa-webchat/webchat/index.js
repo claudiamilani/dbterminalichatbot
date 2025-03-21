@@ -2,49 +2,76 @@
 // Puoi anche usare Math.random() o un timestamp unico, ma SOLO UNA VOLTA.
 const senderId = "user_static_id";
 
-// Funzione per inviare il messaggio all'API di Rasa e ricevere la risposta
+// Funzione principale per inviare il messaggio all'API di Rasa e ricevere la risposta
 async function sendMessageToRasa(message) {
-    const responseContainer = document.querySelector(".messages"); // Contenitore dei messaggi
+    console.log("Invio messaggio a Rasa:", message);
 
-    // Prepara i dati da inviare a Rasa, usando SEMPRE lo stesso senderId
+    // Prepara i dati da inviare a Rasa
     const data = {
         sender: senderId,
         message: message
     };
 
     try {
-        // Invia il messaggio all'endpoint di Rasa
         const response = await fetch('http://localhost:5005/webhooks/rest/webhook', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         });
 
-        // Ottieni la risposta JSON
+        // Ottieni la risposta JSON da Rasa
         const rasaResponse = await response.json();
+        console.log("Risposta Rasa grezza:", rasaResponse);
 
-        // Aggiungi la risposta di Rasa al contenitore della chat
-        if (rasaResponse && rasaResponse.length > 0) {
-            rasaResponse.forEach(rasaMessage => {
-                const botMessage = document.createElement('li');
-                botMessage.classList.add('bot-message');
-                // Supporta i ritorni a capo sostituendo "\n" con <br>
-                botMessage.innerHTML = rasaMessage.text.replace(/\n/g, "<br>");
-                responseContainer.appendChild(botMessage);
-                scrollToBottom();
-            });
-        }
+        // Gestisce la risposta di Rasa, inclusi i pulsanti
+        handleRasaResponse(rasaResponse);
     } catch (error) {
         console.error('Errore durante la comunicazione con Rasa:', error);
     }
 }
 
+// Funzione per gestire la risposta di Rasa e renderizzare messaggi e pulsanti
+function handleRasaResponse(messages) {
+    const responseContainer = document.querySelector(".messages");
+
+    messages.forEach(message => {
+        console.log("Messaggio Rasa:", message);
+
+        // Se c'è del testo
+        if (message.text) {
+            const messageElement = document.createElement('li');
+            messageElement.classList.add('bot-message');
+            // Sostituisce i ritorni a capo "\n" con <br>
+            messageElement.innerHTML = message.text.replace(/\n/g, "<br>");
+            responseContainer.appendChild(messageElement);
+        }
+
+        // Se ci sono pulsanti
+        if (message.buttons) {
+            console.log("Pulsanti ricevuti:", message.buttons);
+            message.buttons.forEach(button => {
+                const buttonElement = document.createElement('button');
+                buttonElement.innerText = button.title;
+                // Classe CSS opzionale per styling
+                buttonElement.classList.add('bot-button');
+                buttonElement.onclick = () => {
+                    console.log("Click pulsante, invio payload:", button.payload);
+                    sendMessageToRasa(button.payload);
+                };
+                responseContainer.appendChild(buttonElement);
+            });
+        }
+    });
+
+    scrollToBottom();
+}
+
 // Funzione per gestire lo scroll verso il basso
 function scrollToBottom() {
     const chatBox = document.getElementById("chat-box");
-    chatBox.scrollTop = chatBox.scrollHeight;
+    if (chatBox) {
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
 }
 
 // Gestione del pulsante "Invia"

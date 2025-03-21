@@ -1,0 +1,50 @@
+version: "3.1"
+
+stories:
+  # ------------------------ OPZIONE 1 ------------------------
+  - story: Greeting and selecting option 1 with brand
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: choose_option_1
+      - action: action_query_brands  # Mostra la lista dei brand
+      - intent: select_brand        # L'utente sceglie un brand
+      - action: action_query_models # Mostra i modelli per il brand scelto
+      - action: action_listen
+
+  # ------------------------ OPZIONE 2 ------------------------
+  - story: Greeting and selecting option 2
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: choose_option_2
+      - action: action_query_categories
+      - action: action_listen
+
+  - story: User selects a category
+    steps:
+      - intent: select_category
+      - action: action_query_attributes_by_category
+      - action: action_listen
+
+  - story: User selects a model for that category
+    steps:
+      - intent: select_model_for_category
+      - action: action_query_attributes_by_model
+      - action: action_listen
+
+  # ------------------------ OPZIONE 3 ------------------------
+  - story: Greeting and selecting option 3
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: choose_option_3
+      - action: action_listen
+
+  # ------------------------ UNIVERSAL SELECT BRAND ------------------------
+  - story: Universal select brand
+    steps:
+      - intent: select_brand
+      - action: action_query_models
+      - action: action_listen
+
