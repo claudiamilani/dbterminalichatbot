@@ -1,0 +1,20 @@
+[
+  {
+    "tag_name": "entity",
+    "ids_to_tags": {
+      "1": "B-cognome",
+      "2": "I-cognome",
+      "3": "L-cognome",
+      "4": "U-cognome",
+      "0": "O"
+    },
+    "tags_to_ids": {
+      "B-cognome": 1,
+      "I-cognome": 2,
+      "L-cognome": 3,
+      "U-cognome": 4,
+      "O": 0
+    },
+    "num_tags": 5
+  }
+]

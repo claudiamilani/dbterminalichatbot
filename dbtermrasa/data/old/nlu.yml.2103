@@ -1,0 +1,77 @@
+version: "3.1"
+
+nlu:
+  - intent: greet
+    examples: |
+      - Ciao
+      - Salve
+      - Buongiorno
+      - Ehi
+
+  - intent: choose_option_1
+    examples: |
+      - Scelgo l'opzione 1
+      - scelgo opzione 1
+      - Scelgo la prima opzione
+      - Preferisco l'opzione 1
+      - Voglio sapere le marche più vendute
+      - Mi interessa la prima opzione
+      - Opzione 1
+      - Dammi la prima opzione
+      - Voglio l’opzione uno
+      - Scusa, voglio la 1
+
+  - intent: choose_option_2
+    examples: |
+      - Scelgo l'opzione 2
+      - scelgo opzione 2
+      - Voglio la seconda opzione
+      - Voglio l’elenco delle categorie
+      - Mi interessa la seconda opzione
+      - Voglio le caratteristiche tecniche
+      - Opzione 2
+      - Dammi la seconda opzione
+      - Fammi vedere la seconda opzione
+      - Preferisco la seconda opzione
+      - Voglio fare la 2
+
+  - intent: choose_option_3
+    examples: |
+      - Scelgo l'opzione 3
+      - scelgo opzione 3
+      - Mi interessa la terza opzione
+      - Voglio configurare il mio telefonino
+      - Voglio la 3
+      - Fammi vedere la terza opzione
+      - Preferisco la terza opzione
+
+  - intent: select_brand
+    examples: |
+      - Voglio sapere i modelli più venduti della marca [Samsung](device_make)
+      - Dammi i modelli di [Samsung](device_make)
+      - Mostrami i modelli di [Samsung](device_make)
+      - [Samsung](device_make)
+      - [Oppo](device_make)
+      - [Apple](device_make)
+      - [Google](device_make)
+      - [HUAWEI](device_make)
+      - [XIAOMI](device_make)
+      - I modelli più venduti di [Samsung](device_make)
+      - Voglio i modelli di [Sony](device_make)
+      - [Sony](device_make)
+
+  - intent: select_category
+    examples: |
+      - Vorrei vedere la categoria [display](attribute_category)
+      - Mostrami la categoria [Networking](attribute_category)
+      - Voglio la lista della categoria [Display](attribute_category)
+      - [Display](attribute_category)
+      - [Networking](attribute_category)
+
+  - intent: select_model_for_category
+    examples: |
+      - Voglio i dettagli per il modello [A57s](device_model)
+      - Dammi i dettagli di [A57s](device_model)
+      - Mostrami attributi per [A57s](device_model)
+      - Info su [A57s](device_model)
+

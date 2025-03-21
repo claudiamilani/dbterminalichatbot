@@ -1,0 +1,56 @@
+version: "3.1"
+
+intents:
+  - greet
+  - choose_option_1
+  - choose_option_2
+  - choose_option_3
+  - select_brand
+  - select_category
+  - select_model_for_category
+
+entities:
+  - device_make
+  - device_model
+  - attribute_category
+
+slots:
+  device_make:
+    type: any
+    mappings:
+      - type: from_entity
+        entity: device_make
+
+  device_model:
+    type: any
+    mappings:
+      - type: from_entity
+        entity: device_model
+
+  attribute_category:
+    type: any
+    mappings:
+      - type: from_entity
+        entity: attribute_category
+
+responses:
+  utter_greet:
+    - text: "Ciao, sono il tuo assistente personale. Posso esserti utile per:"
+      buttons:
+        - title: "Marche e Modelli più venduti"
+          payload: '/choose_option_1'
+        - title: "Caratteristiche tecniche"
+          payload: '/choose_option_2'
+        - title: "Assistenza configurazione telefonino"
+          payload: '/choose_option_3'
+
+  utter_fallback:
+    - text: "Scusa, non ho capito. Puoi ripetere?"
+
+actions:
+  - action_query_brands
+  - action_query_models
+  - action_query_categories
+  - action_query_attributes_by_category
+  - action_query_attributes_by_model
+

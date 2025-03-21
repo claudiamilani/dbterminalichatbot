@@ -1,0 +1,28 @@
+[
+  {
+    "tag_name": "entity",
+    "ids_to_tags": {
+      "1": "B-device_name",
+      "2": "I-device_name",
+      "3": "L-device_name",
+      "4": "U-device_name",
+      "5": "B-feature",
+      "6": "I-feature",
+      "7": "L-feature",
+      "8": "U-feature",
+      "0": "O"
+    },
+    "tags_to_ids": {
+      "B-device_name": 1,
+      "I-device_name": 2,
+      "L-device_name": 3,
+      "U-device_name": 4,
+      "B-feature": 5,
+      "I-feature": 6,
+      "L-feature": 7,
+      "U-feature": 8,
+      "O": 0
+    },
+    "num_tags": 9
+  }
+]

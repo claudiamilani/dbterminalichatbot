@@ -1,0 +1,36 @@
+[
+  {
+    "tag_name": "entity",
+    "ids_to_tags": {
+      "1": "B-attributes",
+      "2": "I-attributes",
+      "3": "L-attributes",
+      "4": "U-attributes",
+      "5": "B-brand",
+      "6": "I-brand",
+      "7": "L-brand",
+      "8": "U-brand",
+      "9": "B-model",
+      "10": "I-model",
+      "11": "L-model",
+      "12": "U-model",
+      "0": "O"
+    },
+    "tags_to_ids": {
+      "B-attributes": 1,
+      "I-attributes": 2,
+      "L-attributes": 3,
+      "U-attributes": 4,
+      "B-brand": 5,
+      "I-brand": 6,
+      "L-brand": 7,
+      "U-brand": 8,
+      "B-model": 9,
+      "I-model": 10,
+      "L-model": 11,
+      "U-model": 12,
+      "O": 0
+    },
+    "num_tags": 13
+  }
+]

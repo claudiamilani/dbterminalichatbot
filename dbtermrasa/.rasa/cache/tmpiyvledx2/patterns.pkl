@@ -1,0 +1,6 @@
+[
+  {
+    "name": "asset",
+    "pattern": "(\\bandroid\\b|\\biphone\\b)"
+  }
+]
