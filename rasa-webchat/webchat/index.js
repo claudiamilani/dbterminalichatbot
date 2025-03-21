@@ -1,9 +1,12 @@
+// Genera un ID fisso una sola volta all'inizio.
+// Puoi anche usare Math.random() o un timestamp unico, ma SOLO UNA VOLTA.
+const senderId = "user_static_id";
+
 // Funzione per inviare il messaggio all'API di Rasa e ricevere la risposta
 async function sendMessageToRasa(message) {
-    const senderId = "user_" + new Date().getTime(); // Genera un ID unico per la sessione
     const responseContainer = document.querySelector(".messages"); // Contenitore dei messaggi
 
-    // Prepara i dati da inviare a Rasa
+    // Prepara i dati da inviare a Rasa, usando SEMPRE lo stesso senderId
     const data = {
         sender: senderId,
         message: message
@@ -27,7 +30,8 @@ async function sendMessageToRasa(message) {
             rasaResponse.forEach(rasaMessage => {
                 const botMessage = document.createElement('li');
                 botMessage.classList.add('bot-message');
-                botMessage.innerHTML = rasaMessage.text.replace(/\n/g, "<br>"); // Supporta i ritorni a capo
+                // Supporta i ritorni a capo sostituendo "\n" con <br>
+                botMessage.innerHTML = rasaMessage.text.replace(/\n/g, "<br>");
                 responseContainer.appendChild(botMessage);
                 scrollToBottom();
             });

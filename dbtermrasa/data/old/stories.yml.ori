@@ -1,0 +1,25 @@
+version: "3.1"
+
+stories:
+  # Flusso quando l'utente saluta, seleziona un'opzione e poi seleziona un brand
+  - story: Greeting and selecting option 1 with brand
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: choose_option
+      - action: action_query_brands  # Mostra i brand disponibili
+      - intent: select_brand  # L'utente seleziona un brand
+      - action: action_query_models  # Mostra i modelli per il brand selezionato
+      - action: action_listen  # Aspetta la risposta dell'utente
+
+  # Flusso quando l'utente saluta, seleziona un'opzione ma non seleziona un brand
+  - story: Greeting and selecting option 1 without brand
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: choose_option
+      - action: action_query_brands  # Mostra i brand disponibili
+      - intent: select_brand  # L'utente non seleziona una marca
+      - action: action_query_models  # Mostra il messaggio che la marca non è stata selezionata
+      - action: action_listen  # Aspetta la risposta dell'utente
+
