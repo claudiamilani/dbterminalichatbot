@@ -1,12 +1,5 @@
 /.phpunit.cache
 /node_modules
-/public/build
-/public/hot
-/public/css/app.css
-/public/css/custom.css
-/public/js/app.js
-/public/js/custom.js
-/public/storage
 /storage/*.key
 /.idea
 /.vscode
@@ -23,6 +16,7 @@ _ide_helper.php
 /storage/debugbar/*
 public/docs
 public/terminal-pictures
+dbtermrasa/.models/
 dbtermrasa/.rasa/
 dbtermrasa/.cache/
 dbtermrasa/.rasa/cache
