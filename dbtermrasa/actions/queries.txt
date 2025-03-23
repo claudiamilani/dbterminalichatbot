@@ -49,7 +49,6 @@ WHERE
         AND T.CERTIFIED = TRUE
         AND A.PUBLISHED = TRUE
         AND AC.NAME = 'display'
-		AND AV.INGESTION_SOURCE_ID = 2
 		AND T.NAME like '%A57s%'
 
 
@@ -71,4 +70,3 @@ WHERE
         AND T.CERTIFIED = TRUE
         AND A.PUBLISHED = TRUE
         AND AC.NAME = 'display'
-	AND AV.INGESTION_SOURCE_ID = 2

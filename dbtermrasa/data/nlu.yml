@@ -30,8 +30,9 @@ nlu:
       - voglio i modelli di [Alcatel](brand_raw)
       - ci sono modelli [Honor](brand_raw)?
       - Dammi i modelli di [Huawei](brand_raw)
-      - [Sony](brand_raw)
-      - voglio i modelli di [Xiaomi](brand_raw)
+      - [Apple](brand_raw)
+      - [Samsung](brand_raw)
+      - voglio i modelli di [Oppo](brand_raw)
 
   # INTENT: select_category
   - intent: select_category
@@ -39,9 +40,10 @@ nlu:
       - Vorrei vedere la categoria [display](category_raw)
       - Mostrami la categoria [networking](category_raw)
       - [os](category_raw)
-      - Vorrei vedere la categoria [category_raw]
+      - Vorrei vedere la categoria [display](category_raw)
+      - Vorrei vedere gli attributi di [cpu](category_raw)
 
-  # INTENT: select_model_for_category
+  # INTENT: select_model_for_category (da rivedere)
   - intent: select_model_for_category
     examples: |
       - Voglio i dettagli per il modello [A57s](model_raw)
@@ -49,7 +51,7 @@ nlu:
       - Mostrami attributi per [model_raw]
       - Info su [model_raw]
 
-  # INTENT: search_models_by_attribute_value
+  # INTENT: search_models_by_attribute_value (da rivedere)
   - intent: search_models_by_attribute_value
     examples: |
       - Voglio i modelli che hanno [Display Secondario Larghezza](attribute_desc_raw) = [904](attribute_val_raw)
