@@ -8,30 +8,52 @@ intents:
   - select_brand
   - select_category
   - select_model_for_category
+  - search_models_by_attribute_value
+  - want_model_details
+  - want_attribute_search
 
 entities:
-  - device_make
-  - device_model
-  - attribute_category
+  - brand_raw
+  - category_raw
+  - model_raw
+  - attribute_desc_raw
+  - attribute_val_raw
 
 slots:
-  device_make:
+  brand_raw:
     type: any
     mappings:
       - type: from_entity
-        entity: device_make
+        entity: brand_raw
+      - type: from_text
 
-  device_model:
+  category_raw:
     type: any
     mappings:
       - type: from_entity
-        entity: device_model
+        entity: category_raw
+      - type: from_text
 
-  attribute_category:
+  model_raw:
     type: any
     mappings:
       - type: from_entity
-        entity: attribute_category
+        entity: model_raw
+      - type: from_text
+
+  attribute_desc_raw:
+    type: any
+    mappings:
+      - type: from_entity
+        entity: attribute_desc_raw
+      - type: from_text
+
+  attribute_val_raw:
+    type: any
+    mappings:
+      - type: from_entity
+        entity: attribute_val_raw
+      - type: from_text
 
 responses:
   utter_greet:
@@ -47,10 +69,20 @@ responses:
   utter_fallback:
     - text: "Scusa, non ho capito. Puoi ripetere?"
 
+  utter_ask_model:
+    - text: "Ok, dimmi il modello di cui vuoi vedere gli attributi."
+
+  utter_ask_attribute_value:
+    - text: "Ok, dimmi l'attributo e il valore (es. 'Display Secondario Larghezza = 904')."
+
 actions:
   - action_query_brands
   - action_query_models
   - action_query_categories
   - action_query_attributes_by_category
   - action_query_attributes_by_model
+  - action_query_devices_by_attribute_value
+  - action_ask_after_category
+  - action_return_menu
+  - action_reset_slots
 

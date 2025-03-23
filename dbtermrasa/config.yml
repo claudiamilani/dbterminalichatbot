@@ -2,6 +2,7 @@ recipe: default.v1
 assistant_id: example_bot
 version: "3.1"
 language: it
+
 pipeline:
   - name: WhitespaceTokenizer
   - name: RegexFeaturizer
