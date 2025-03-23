@@ -21,7 +21,7 @@
                                     </td>
                                     <td class="col-md-6">
                                         <div class="">
-                                            <b>Wind</b>
+                                            <b>Utente</b>
                                         </div>
                                         @switch($attribute->getInputTypeOption())
                                             @case('TEXT')

@@ -40,7 +40,7 @@
                                     </td>
                                     <td class="col-md-3">
                                         <div class="">
-                                            <b>Wind</b>
+                                            <b>Utente</b>
                                         </div>
                                         <p> {{optional($attribute->attributeValues->where('ingestion_source_id',\App\DBT\Models\IngestionSource::SRC_ADMIN)->first())->getReadableValue()}}</p>
                                     </td>
