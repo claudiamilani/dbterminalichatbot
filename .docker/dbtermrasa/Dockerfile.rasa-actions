@@ -1,0 +1,18 @@
+# Usa l'immagine ufficiale di Rasa come base
+FROM rasa/rasa-sdk:latest
+
+# Passa all'utente root per avere permessi di scrittura
+USER root
+
+# Installa le dipendenze necessarie per PostgreSQL (usando psycopg2-binary per evitare la compilazione)
+RUN pip install psycopg2-binary
+
+# Copia le azioni personalizzate nel contenitore
+COPY ./dbtermrasa/actions /app/actions
+
+# Imposta la directory di lavoro
+WORKDIR /app
+
+# Comando per eseguire il server delle azioni
+CMD ["start", "--actions", "actions"]
+

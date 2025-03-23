@@ -1,0 +1,139 @@
+services:
+  nginx:
+    image: nginx:latest
+    volumes:
+      - .docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - .docker/nginx/default.ssl.conf:/etc/nginx/conf.d/default.ssl.conf # run .docker/nginx/make_ssl_certs.dev.sh if needed
+      - .:/var/www/html
+    ports:
+      - ${HTTP_PORT:-80}:80
+      - ${HTTPS_PORT:-443}:443
+    depends_on:
+      app:
+        condition: service_started
+  app:
+    build:
+      context: .
+      dockerfile: .docker/php/Dockerfile
+    user: ${UID:-1000}:${GID:-1000}
+    volumes:
+      - .env:/var/www/html/.env:delegated
+      - .:/var/www/html:delegated
+      - .docker/php/php.ini:/usr/local/etc/php/conf.d/custom.ini:delegated
+    links:
+      - pgsql
+      - redis
+    environment:
+      COMPOSER_HOME: .docker/php/composer
+      XDG_CONFIG_HOME: .docker/psysh
+      DB_HOST: pgsql
+      DB_DATABASE: app
+      DB_USERNAME: app
+      DB_PASSWORD: password
+      DB_PORT: ${DB_PORT:-5432}
+      REDIS_HOST: redis
+      REDIS_PORT: ${REDIS_PORT:-6379}
+  scheduler:
+    build:
+      context: .
+      dockerfile: .docker/php/Dockerfile
+    image: pantheon.medialogic.it:5050/php/laravel/dbterminali/php:8.3-fpm-bookworm
+    user: ${UID:-1000}:${GID:-1000}
+    profiles: [ "cli-only" ]
+    volumes:
+      - .:/var/www/html:delegated
+      - .docker/php/php.ini:/usr/local/etc/php/conf.d/custom.ini:delegated
+    links:
+      - pgsql
+      - redis
+    environment:
+      DB_HOST: pgsql
+      DB_DATABASE: app
+      DB_USERNAME: app
+      DB_PASSWORD: password
+      DB_PORT: ${DB_PORT:-5432}
+      REDIS_HOST: redis
+      REDIS_PORT: ${REDIS_PORT:-6379}
+    entrypoint: sh -c "php artisan schedule:work"
+  horizon:
+    build:
+      context: .
+      dockerfile: .docker/php/Dockerfile
+    image: pantheon.medialogic.it:5050/php/laravel/dbterminali/php:8.3-fpm-bookworm
+    user: ${UID:-1000}:${GID:-1000}
+    profiles: [ "cli-only" ]
+    volumes:
+      - .:/var/www/html:delegated
+      - .docker/php/php.ini:/usr/local/etc/php/conf.d/custom.ini:delegated
+    links:
+      - pgsql
+      - redis
+    environment:
+      DB_HOST: pgsql
+      DB_DATABASE: app
+      DB_USERNAME: app
+      DB_PASSWORD: password
+      DB_PORT: ${DB_PORT:-5432}
+      REDIS_HOST: redis
+      REDIS_PORT: ${REDIS_PORT:-6379}
+    entrypoint: sh -c "php artisan horizon"
+  pgsql:
+    image: postgres:16-alpine
+    volumes:
+      - pgsql_data:/var/lib/postgresql/data
+    ports:
+      - ${DB_PORT:-5432}:5432
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: app
+      POSTGRES_DB: app
+      PGDATA:
+        /var/lib/postgresql/data
+  redis:
+    image: redis:7-alpine
+    ports:
+      - ${REDIS_PORT:-6379}:6379
+    volumes:
+      - redis_data:/data
+  node:
+    image: node:12-alpine
+    user: ${UID:-1000}:${GID:-1000}
+    profiles: [ "cli-only" ]
+    working_dir: /srv/app
+    volumes:
+      - .:/srv/app:delegated
+  rasa-actions:
+    build:
+      context: .
+      dockerfile: .docker/dbtermrasa/Dockerfile.rasa-actions
+    volumes:
+      - ./dbtermrasa/actions:/app/actions
+      - ./dbtermrasa/endpoints.yml:/app/endpoints.yml
+    ports:
+      - "5055:5055"
+    command: start --actions actions
+  rasa:
+    image: rasa/rasa:latest
+    volumes:
+      - ./dbtermrasa:/app
+    ports:
+      - "5005:5005"  
+    entrypoint: ["sh", "-c", "echo 'Attendo 5 secondi prima di avviare Rasa...'; sleep 5; rasa run --enable-api --model /app/models/20250322-181752-stern-falls.tar.gz --cors '*' --debug"]
+    depends_on:
+      - pgsql
+      - redis
+      - rasa-actions
+  frontend:
+    build:
+      context: .
+      dockerfile: .docker/frontend/frontend.Dockerfile
+    ports:
+      - "8080:80"  
+    depends_on:
+      - rasa
+
+
+volumes:
+  pgsql_data:
+  redis_data:
+  rasa_project:
