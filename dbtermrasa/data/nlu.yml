@@ -12,45 +12,54 @@ nlu:
     examples: |
       - Voglio vedere le marche
       - Mostrami le marche
+      - Elenco delle marche disponibili
 
   - intent: request_categories
     examples: |
       - Voglio vedere le categorie
       - Elenco categorie
+      - Mostrami le categorie
 
   - intent: request_assistance
     examples: |
       - Ho bisogno di assistenza
       - Vorrei supporto per il mio telefonino
+      - Serve aiuto per il cellulare
 
   - intent: select_brand
     examples: |
-      - voglio i modelli di [Samsung](brand_raw)
-      - voglio i modelli di [Alcatel](brand_raw)
-      - ci sono modelli [Honor](brand_raw)?
+      - Voglio i modelli di [Samsung](brand_raw)
       - Dammi i modelli di [Huawei](brand_raw)
       - [Apple](brand_raw)
-      - [Samsung](brand_raw)
-      - voglio i modelli di [Oppo](brand_raw)
-
+      - [Oppo](brand_raw)
+      - Mostrami [Xiaomi](brand_raw)
 
   - intent: select_category
     examples: |
-      - Vorrei vedere la categoria [display](category_raw)
-      - Mostrami la categoria [networking](category_raw)
+      - Mostrami la categoria [display](category_raw)
       - [os](category_raw)
-      - Vorrei vedere la categoria [display](category_raw)
       - Vorrei vedere gli attributi di [cpu](category_raw)
+      - Voglio i dettagli della categoria [fotocamera](category_raw)
 
   - intent: model_category_search
     examples: |
-      - iPhone15: cpu
-      - Galaxy S21: display
-      - P30: networking
+      - Ricerca_modelli: iPhone15|cpu
+      - Ricerca_modelli: GalaxyS21|display
+      - Ricerca_modelli: P30|networking
+      - Ricerca_modelli: Reno_12_5G|dimensions
+      - Ricerca_modelli: Nokia3310|batteria
+      - Ricerca_modelli: Pixel8|fotocamera
+      - Ricerca_modelli: esempio|test
+      - Ricerca_modelli: qualsiasiModello|qualsiasiCategoria
+      - Ricerca_modelli: PocoX5|os
 
   - intent: attribute_value_search
     examples: |
-      - Velocità Processore: 2.4 GHz
-      - Display Secondario Larghezza: 904
-      - CPU Clock: 1.8 GHz
+      - Ricerca_attributi: Velocità Processore|2.4 GHz
+      - Ricerca_attributi: Display Secondario|904
+      - Ricerca_attributi: CPU Clock|1.8 GHz
+      - Ricerca_attributi: Batteria|3000mAh
+      - Ricerca_attributi: Fotocamera|12MP
+      - Ricerca_attributi: qualcosa|qualcos'altro
+      - Ricerca_attributi: colore|nero
 

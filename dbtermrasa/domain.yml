@@ -15,31 +15,33 @@ entities:
   - category_raw
   - attribute_desc_raw
   - attribute_val_raw
+  - model_category_search_raw
+  - attribute_value_search_raw
 
 slots:
   brand_raw:
     type: any
     mappings:
-      - type: from_entity
-        entity: brand_raw
       - type: from_text
   category_raw:
     type: any
     mappings:
-      - type: from_entity
-        entity: category_raw
       - type: from_text
   attribute_desc_raw:
     type: any
     mappings:
-      - type: from_entity
-        entity: attribute_desc_raw
       - type: from_text
   attribute_val_raw:
     type: any
     mappings:
-      - type: from_entity
-        entity: attribute_val_raw
+      - type: from_text
+  model_category_search_raw:
+    type: any
+    mappings:
+      - type: from_text
+  attribute_value_search_raw:
+    type: any
+    mappings:
       - type: from_text
 
 responses:
@@ -56,17 +58,15 @@ responses:
   utter_fallback:
     - text: "Scusa, non ho capito. Puoi ripetere?"
 
-  # Messaggio per invitare a scegliere la categoria
   utter_ask_select_category:
     - text: "Seleziona una categoria per visualizzare i relativi attributi."
 
-  # Messaggi per i flussi basati sui formati
   utter_ask_model_category:
-    - text: "Ok, dimmi 'modello:categoria' (es. 'iPhone15: cpu')."
-  utter_ask_attribute_value_2:
-    - text: "Ok, dimmi 'attributo:valore' (es. 'Velocità Processore: 2.4 GHz')."
+    - text: "Inserisci il comando nel formato: 'Ricerca_modelli: modello|categoria'."
 
-  # Messaggio per assistenza
+  utter_ask_attribute_value_2:
+    - text: "Inserisci il comando nel formato: 'Ricerca_attributi: attributo|valore'."
+
   utter_assistance:
     - text: "Per assistenza telefonino, contatta il nostro supporto al numero 800-123456 o visita il nostro sito."
 

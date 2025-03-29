@@ -1,25 +1,145 @@
 version: "3.1"
 
 stories:
-  # Flusso quando l'utente saluta, seleziona un'opzione e poi seleziona un brand
-  - story: Greeting and selecting option 1 with brand
+  # Flusso "Marche e modelli"
+  - story: Greeting and request brands
     steps:
       - intent: greet
       - action: utter_greet
-      - intent: choose_option
-      - action: action_query_brands  # Mostra i brand disponibili
-      - intent: select_brand  # L'utente seleziona un brand
-      - action: action_query_models  # Mostra i modelli per il brand selezionato
-      - action: action_listen  # Aspetta la risposta dell'utente
+      - intent: request_brands
+      - action: action_query_brands
 
-  # Flusso quando l'utente saluta, seleziona un'opzione ma non seleziona un brand
-  - story: Greeting and selecting option 1 without brand
+  - story: Select brand and view models
     steps:
-      - intent: greet
-      - action: utter_greet
-      - intent: choose_option
-      - action: action_query_brands  # Mostra i brand disponibili
-      - intent: select_brand  # L'utente non seleziona una marca
-      - action: action_query_models  # Mostra il messaggio che la marca non è stata selezionata
-      - action: action_listen  # Aspetta la risposta dell'utente
+      - intent: select_brand
+      - action: action_query_models
+      - action: action_reset_slots
+      - action: action_return_menu
+
+  # Flusso "Caratteristiche tecniche"
+  - story: Request Categories
+    steps:
+      - intent: request_categories
+      - action: action_query_categories
+      - action: utter_ask_select_category
+      - action: action_listen
+      - intent: select_category
+      - action: action_query_attributes_by_category
+
+  # Flusso "modello:categoria"
+  - story: Model and category search
+    steps:
+      - intent: model_category_search
+      - action: utter_ask_model_category
+      - action: action_listen
+      - action: action_query_attributes_by_model_and_category
+      - action: action_reset_slots
+      - action: action_return_menu
+
+  - story: Model and category search additional examples
+    steps:
+      - intent: model_category_search
+        user: |
+          Ricerca_modelli: Nokia3310|batteria
+      - action: utter_ask_model_category
+      - action: action_listen
+      - action: action_query_attributes_by_model_and_category
+      - action: action_reset_slots
+      - action: action_return_menu
+
+  - story: Model and category search second additional
+    steps:
+      - intent: model_category_search
+        user: |
+          Ricerca_modelli: Pixel8|fotocamera
+      - action: utter_ask_model_category
+      - action: action_listen
+      - action: action_query_attributes_by_model_and_category
+      - action: action_reset_slots
+      - action: action_return_menu
+
+  - story: Model and category search with entity os
+    steps:
+      - intent: model_category_search
+        entities:
+          - category_raw: os
+      - action: utter_ask_model_category
+      - action: action_listen
+      - action: action_query_attributes_by_model_and_category
+      - action: action_reset_slots
+      - action: action_return_menu
+
+  - story: Model and category search with entity fotocamera
+    steps:
+      - intent: model_category_search
+        entities:
+          - category_raw: fotocamera
+      - action: utter_ask_model_category
+      - action: action_listen
+      - action: action_query_attributes_by_model_and_category
+      - action: action_reset_slots
+      - action: action_return_menu
+
+  - story: Model and category search with entity batteria
+    steps:
+      - intent: model_category_search
+        entities:
+          - category_raw: batteria
+      - action: utter_ask_model_category
+      - action: action_listen
+      - action: action_query_attributes_by_model_and_category
+      - action: action_reset_slots
+      - action: action_return_menu
+
+
+  - story: Generic model category search
+    steps:
+      - intent: model_category_search
+        user: |
+          Ricerca_modelli: qualsiasiModello|qualsiasiCategoria
+      - action: utter_ask_model_category
+      - action: action_listen
+      - action: action_query_attributes_by_model_and_category
+      - action: action_reset_slots
+      - action: action_return_menu
+
+  # Flusso "attributo:valore"
+  - story: Attribute value search
+    steps:
+      - intent: attribute_value_search
+      - action: utter_ask_attribute_value_2
+      - action: action_listen
+      - action: action_query_devices_by_attribute_value_2
+      - action: action_reset_slots
+      - action: action_return_menu
+
+  - story: Generic attribute value search
+    steps:
+      - intent: attribute_value_search
+        user: |
+          Ricerca_attributi: qualcosa|qualcos'altro
+      - action: utter_ask_attribute_value_2
+      - action: action_listen
+      - action: action_query_devices_by_attribute_value_2
+      - action: action_reset_slots
+      - action: action_return_menu
+
+  - story: Additional attribute value search
+    steps:
+      - intent: attribute_value_search
+        user: |
+          Ricerca_attributi: colore|nero
+      - action: utter_ask_attribute_value_2
+      - action: action_listen
+      - action: action_query_devices_by_attribute_value_2
+      - action: action_reset_slots
+      - action: action_return_menu
+
+  # Flusso "Assistenza telefonino"
+  - story: Request Assistance
+    steps:
+      - intent: request_assistance
+      - action: utter_assistance
+      - action: action_reset_slots
+      - action: action_return_menu
 

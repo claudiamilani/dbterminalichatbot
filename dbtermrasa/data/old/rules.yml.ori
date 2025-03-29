@@ -1,7 +1,26 @@
 version: "3.1"
+
 rules:
-  - rule: Default fallback
+  - rule: Fallback rule
     steps:
-      - intent: greet
-      - action: utter_greet
+      - intent: nlu_fallback
+      - action: utter_fallback
+
+  - rule: Handle model and category search generico
+    steps:
+      - intent: model_category_search
+      - action: utter_ask_model_category
+      - action: action_listen
+      - action: action_query_attributes_by_model_and_category
+      - action: action_reset_slots
+      - action: action_return_menu
+
+  - rule: Handle attribute and value search generico
+    steps:
+      - intent: attribute_value_search
+      - action: utter_ask_attribute_value_2
+      - action: action_listen
+      - action: action_query_devices_by_attribute_value_2
+      - action: action_reset_slots
+      - action: action_return_menu
 

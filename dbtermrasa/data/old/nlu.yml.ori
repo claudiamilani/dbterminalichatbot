@@ -8,23 +8,52 @@ nlu:
       - Buongiorno
       - Ehi
 
-  - intent: choose_option
+  - intent: request_brands
     examples: |
-      - Scelgo l'opzione 1
-      - Voglio sapere le marche più vendute
-      - Mi interessa la prima opzione
-      - Opzione 1
+      - Voglio vedere le marche
+      - Mostrami le marche
+
+  - intent: request_categories
+    examples: |
+      - Voglio vedere le categorie
+      - Elenco categorie
+
+  - intent: request_assistance
+    examples: |
+      - Ho bisogno di assistenza
+      - Vorrei supporto per il mio telefonino
 
   - intent: select_brand
     examples: |
-      - Voglio sapere i modelli più venduti della marca [Samsung](device_make)
-      - Dammi i modelli di [Samsung](device_make)
-      - Mostrami i modelli di [Samsung](device_make)
-      - [Samsung](device_make)
-      - [Oppo](device_make)
-      - [Apple](device_make)
-      - [Google](device_make)
-      - [HUAWEI](device_make)
-      - [XIAOMI](device_make)
-      - I modelli più venduti di [Samsung](device_make)
+      - Voglio i modelli di [Samsung](brand_raw)
+      - Dammi i modelli di [Huawei](brand_raw)
+      - [Apple](brand_raw)
+      - [Oppo](brand_raw)
+
+  - intent: select_category
+    examples: |
+      - Mostrami la categoria [display](category_raw)
+      - [os](category_raw)
+      - Vorrei vedere gli attributi di [cpu](category_raw)
+
+  - intent: model_category_search
+    examples: |
+      - Ricerca_modelli: iPhone15|cpu
+      - Ricerca_modelli: GalaxyS21|display
+      - Ricerca_modelli: P30|networking
+      - Ricerca_modelli: Reno_12_5G|dimensions
+      - Ricerca_modelli: Nokia3310|batteria
+      - Ricerca_modelli: Pixel8|fotocamera
+      - Ricerca_modelli: ProvaModello|ProvaCategoria
+      - Ricerca_modelli: esempio|test
+
+  - intent: attribute_value_search
+    examples: |
+      - Ricerca_attributi: Velocità Processore|2.4 GHz
+      - Ricerca_attributi: Display Secondario|904
+      - Ricerca_attributi: CPU Clock|1.8 GHz
+      - Ricerca_attributi: Batteria|3000mAh
+      - Ricerca_attributi: Fotocamera|12MP
+      - Ricerca_attributi: qualcosa|qualcos'altro
+      - Ricerca_attributi: colore|nero
 
