@@ -1,62 +1,55 @@
 version: "3.1"
 
 stories:
+  # Flusso "Marche e modelli"
   - story: Greeting and request brands
     steps:
       - intent: greet
       - action: utter_greet
       - intent: request_brands
       - action: action_query_brands
-      - action: action_listen
 
-  - story: Greeting and request categories
-    steps:
-      - intent: greet
-      - action: utter_greet
-      - intent: request_categories
-      - action: action_query_categories
-      - action: action_listen
-
-  - story: Greeting and request assistance
-    steps:
-      - intent: greet
-      - action: utter_greet
-      - intent: request_assistance
-      - action: action_listen
-
-  - story: Universal select brand
+  - story: Select brand and view models
     steps:
       - intent: select_brand
       - action: action_query_models
       - action: action_reset_slots
-      - action: utter_greet
-      - action: action_listen
+      - action: action_return_menu
 
-  - story: User selects a category
+  # Flusso "Caratteristiche tecniche"
+  - story: Request Categories
     steps:
+      - intent: request_categories
+      - action: action_query_categories
+      - action: utter_ask_select_category
+      - action: action_listen
       - intent: select_category
       - action: action_query_attributes_by_category
-      - action: action_listen
 
-  - story: Category -> want_model_details -> user gives model
+  # Flusso "modello:categoria" → alla fine torna al menù principale
+  - story: Model and category search
     steps:
-      - intent: want_model_details
-      - action: utter_ask_model
+      - intent: model_category_search
+      - action: utter_ask_model_category
       - action: action_listen
-      - intent: select_model_for_category
-      - action: action_query_attributes_by_model
+      - action: action_query_attributes_by_model_and_category
       - action: action_reset_slots
-      - action: utter_greet
-      - action: action_listen
+      - action: action_return_menu
 
-  - story: Category -> want_attribute_search -> user gives attribute & value
+  # Flusso "attributo:valore" → alla fine torna al menù principale
+  - story: Attribute value search
     steps:
-      - intent: want_attribute_search
-      - action: utter_ask_attribute_value
+      - intent: attribute_value_search
+      - action: utter_ask_attribute_value_2
       - action: action_listen
-      - intent: search_models_by_attribute_value
-      - action: action_query_devices_by_attribute_value
+      - action: action_query_devices_by_attribute_value_2
       - action: action_reset_slots
-      - action: utter_greet
-      - action: action_listen
+      - action: action_return_menu
 
+  # Flusso "Assistenza telefonino"
+  - story: Request Assistance
+    steps:
+      - intent: request_assistance
+      - action: utter_assistance
+      - action: action_reset_slots
+      - action: action_return_menu

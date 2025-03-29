@@ -7,15 +7,12 @@ intents:
   - request_assistance
   - select_brand
   - select_category
-  - select_model_for_category
-  - search_models_by_attribute_value
-  - want_model_details
-  - want_attribute_search
+  - model_category_search
+  - attribute_value_search
 
 entities:
   - brand_raw
   - category_raw
-  - model_raw
   - attribute_desc_raw
   - attribute_val_raw
 
@@ -26,28 +23,18 @@ slots:
       - type: from_entity
         entity: brand_raw
       - type: from_text
-
   category_raw:
     type: any
     mappings:
       - type: from_entity
         entity: category_raw
       - type: from_text
-
-  model_raw:
-    type: any
-    mappings:
-      - type: from_entity
-        entity: model_raw
-      - type: from_text
-
   attribute_desc_raw:
     type: any
     mappings:
       - type: from_entity
         entity: attribute_desc_raw
       - type: from_text
-
   attribute_val_raw:
     type: any
     mappings:
@@ -69,20 +56,27 @@ responses:
   utter_fallback:
     - text: "Scusa, non ho capito. Puoi ripetere?"
 
-  utter_ask_model:
-    - text: "Ok, dimmi il modello di cui vuoi vedere gli attributi."
+  # Messaggio per invitare a scegliere la categoria
+  utter_ask_select_category:
+    - text: "Seleziona una categoria per visualizzare i relativi attributi."
 
-  utter_ask_attribute_value:
-    - text: "Ok, dimmi l'attributo e il valore (es. 'Display Secondario Larghezza = 904')."
+  # Messaggi per i flussi basati sui formati
+  utter_ask_model_category:
+    - text: "Ok, dimmi 'modello:categoria' (es. 'iPhone15: cpu')."
+  utter_ask_attribute_value_2:
+    - text: "Ok, dimmi 'attributo:valore' (es. 'Velocità Processore: 2.4 GHz')."
+
+  # Messaggio per assistenza
+  utter_assistance:
+    - text: "Per assistenza telefonino, contatta il nostro supporto al numero 800-123456 o visita il nostro sito."
 
 actions:
   - action_query_brands
   - action_query_models
   - action_query_categories
   - action_query_attributes_by_category
-  - action_query_attributes_by_model
-  - action_query_devices_by_attribute_value
-  - action_ask_after_category
+  - action_query_attributes_by_model_and_category
+  - action_query_devices_by_attribute_value_2
   - action_return_menu
   - action_reset_slots
 

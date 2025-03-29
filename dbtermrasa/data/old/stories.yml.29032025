@@ -1,0 +1,62 @@
+version: "3.1"
+
+stories:
+  - story: Greeting and request brands
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: request_brands
+      - action: action_query_brands
+      - action: action_listen
+
+  - story: Greeting and request categories
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: request_categories
+      - action: action_query_categories
+      - action: action_listen
+
+  - story: Greeting and request assistance
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: request_assistance
+      - action: action_listen
+
+  - story: Universal select brand
+    steps:
+      - intent: select_brand
+      - action: action_query_models
+      - action: action_reset_slots
+      - action: utter_greet
+      - action: action_listen
+
+  - story: User selects a category
+    steps:
+      - intent: select_category
+      - action: action_query_attributes_by_category
+      - action: action_listen
+
+  - story: Category -> want_model_details -> user gives model
+    steps:
+      - intent: want_model_details
+      - action: utter_ask_model
+      - action: action_listen
+      - intent: select_model_for_category
+      - action: action_query_attributes_by_model
+      - action: action_reset_slots
+      - action: utter_greet
+      - action: action_listen
+
+  - story: Category -> want_attribute_search -> user gives attribute & value
+    steps:
+      - intent: want_attribute_search
+      - action: utter_ask_attribute_value
+      - action: action_listen
+      - intent: search_models_by_attribute_value
+      - action: action_query_devices_by_attribute_value
+      - action: action_reset_slots
+      - action: utter_greet
+      - action: action_listen
+

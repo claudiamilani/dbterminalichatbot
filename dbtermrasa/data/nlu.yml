@@ -23,7 +23,6 @@ nlu:
       - Ho bisogno di assistenza
       - Vorrei supporto per il mio telefonino
 
-  # INTENT: select_brand
   - intent: select_brand
     examples: |
       - voglio i modelli di [Samsung](brand_raw)
@@ -34,7 +33,7 @@ nlu:
       - [Samsung](brand_raw)
       - voglio i modelli di [Oppo](brand_raw)
 
-  # INTENT: select_category
+
   - intent: select_category
     examples: |
       - Vorrei vedere la categoria [display](category_raw)
@@ -43,32 +42,15 @@ nlu:
       - Vorrei vedere la categoria [display](category_raw)
       - Vorrei vedere gli attributi di [cpu](category_raw)
 
-  # INTENT: select_model_for_category (da rivedere)
-  - intent: select_model_for_category
+  - intent: model_category_search
     examples: |
-      - Voglio i dettagli per il modello [A57s](model_raw)
-      - Dammi i dettagli di [model_raw]
-      - Mostrami attributi per [model_raw]
-      - Info su [model_raw]
+      - iPhone15: cpu
+      - Galaxy S21: display
+      - P30: networking
 
-  # INTENT: search_models_by_attribute_value (da rivedere)
-  - intent: search_models_by_attribute_value
+  - intent: attribute_value_search
     examples: |
-      - Voglio i modelli che hanno [Display Secondario Larghezza](attribute_desc_raw) = [904](attribute_val_raw)
-      - Quali modelli hanno [attribute_desc_raw] [attribute_val_raw]?
-      - Dammi i modelli con [attribute_desc_raw] [attribute_val_raw]
-      - Mostrami i telefoni con [attribute_desc_raw] uguale a [attribute_val_raw]
-
-  - intent: want_model_details
-    examples: |
-      - Voglio un modello specifico
-      - Voglio vedere gli attributi di un modello
-      - Dettagli di un modello
-
-  - intent: want_attribute_search
-    examples: |
-      - Voglio cercare i modelli con attributo=valore
-      - Voglio fare una ricerca per attributo e valore
-      - Cerca attributo valore
-      - Ricerca attributi
+      - Velocità Processore: 2.4 GHz
+      - Display Secondario Larghezza: 904
+      - CPU Clock: 1.8 GHz
 
