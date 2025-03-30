@@ -53,12 +53,6 @@ stories:
     - action: action_query_devices_by_attribute_value_2
     - action: action_reset_slots
 
-- story: Request assistance
-  steps:
-    - intent: request_assistance
-    - action: utter_assistance
-    - action: action_return_menu
-
 - story: Return to menu
   steps:
     - intent: return_to_menu
@@ -68,3 +62,23 @@ stories:
   steps:
     - intent: continue_research_menu
     - action: utter_continue_research_menu
+
+- story: Assistenza - scelta sistema operativo
+  steps:
+    - intent: request_assistance
+    - action: utter_assistenza
+
+- story: Assistenza Apple
+  steps:
+    - intent: assistenza_apple
+    - action: utter_assistenza_apple
+
+- story: Assistenza Android
+  steps:
+    - intent: assistenza_android
+    - action: utter_assistenza_android
+
+- story: Apri link popup
+  steps:
+    - intent: open_link
+    - action: open_link

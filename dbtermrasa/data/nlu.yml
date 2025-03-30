@@ -93,3 +93,20 @@ nlu:
       - continua ricerca
       - voglio continuare la ricerca
       - mostra opzioni ricerca
+
+  - intent: assistenza_apple
+    examples: |
+      - assistenza_apple
+      - assistenza_apple_custom
+
+  - intent: assistenza_android
+    examples: |
+      - assistenza_android
+      - assistenza_android_custom
+
+  - intent: open_link
+    examples: |
+      - Apri il link
+      - Mostra la guida
+      - Vai alla guida
+      - Voglio vedere questa pagina

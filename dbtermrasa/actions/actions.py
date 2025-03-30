@@ -343,3 +343,27 @@ class ActionReturnMenu(Action):
         )
         return []
 
+class ActionOpenLink(Action):
+    def name(self): return "open_link"
+
+    def run(self, dispatcher, tracker, domain):
+        link = next(tracker.get_latest_entity_values("link"), None)
+        if link:
+            # Apri il popup
+            dispatcher.utter_message(
+                json_message={"type": "popup", "link": link}
+            )
+
+            # Mostra i 3 bottoni: Apple, Android, Menu
+            dispatcher.utter_message(
+                text="Hai bisogno di ulteriore assistenza?",
+                buttons=[
+                    {"title": "APPLE", "payload": "/assistenza_apple"},
+                    {"title": "ANDROID", "payload": "/assistenza_android"},
+                    {"title": "TORNA AL MENU", "payload": "/return_to_menu"}
+                ]
+            )
+        else:
+            dispatcher.utter_message(text="Link non disponibile.")
+        return []
+

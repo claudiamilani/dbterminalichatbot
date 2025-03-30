@@ -13,6 +13,9 @@ intents:
   - attribute_value_search_direct
   - return_to_menu
   - continue_research_menu
+  - assistenza_apple
+  - assistenza_android
+  - open_link
 
 entities:
   - brand_raw
@@ -21,6 +24,7 @@ entities:
   - attribute_val_raw
   - model_category_search_raw
   - attribute_value_search_raw
+  - link
 
 slots:
   brand_raw:
@@ -51,6 +55,11 @@ slots:
     type: any
     mappings:
       - type: from_text
+  link:
+    type: any
+    mappings:
+      - type: from_entity
+        entity: link
 
 responses:
   utter_greet:
@@ -75,9 +84,6 @@ responses:
   utter_ask_attribute_value_2:
     - text: "Inserisci il comando nel formato: 'Ricerca_modelli: attributo|valore'."
 
-  utter_assistance:
-    - text: "Per assistenza telefonino, contatta il nostro supporto al numero 800-123456 o visita il nostro sito."
-
   utter_continue_research_menu:
     - text: "Vuoi continuare con una ricerca specifica?"
       buttons:
@@ -85,6 +91,34 @@ responses:
           payload: "/model_category_search_prompted"
         - title: "Cercare modelli per attributo"
           payload: "/attribute_value_search_prompted"
+
+  utter_assistenza:
+    - text: "Scegli il sistema operativo per il quale ti serve assistenza:"
+      buttons:
+        - title: "APPLE"
+          payload: "/assistenza_apple"
+        - title: "ANDROID"
+          payload: "/assistenza_android"
+
+  utter_assistenza_apple:
+    - text: "Scegli una guida per dispositivi Apple:"
+      buttons:
+        - title: "RIPRISTINO BACKUP"
+          payload: "/open_link{\"link\": \"http://localhost:8080/ripristino_backup_apple.html\"}"
+        - title: "IMPOSTAZIONI FABBRICA"
+          payload: "/open_link{\"link\": \"http://localhost:8080/impostazioni_fabbrica_apple.html\"}"
+        - title: "CONFIGURA APPLE"
+          payload: "/open_link{\"link\": \"http://localhost:8080/configura_apple_internet.html\"}"
+
+  utter_assistenza_android:
+    - text: "Scegli una guida per dispositivi Android:"
+      buttons:
+        - title: "RIPRISTINO BACKUP"
+          payload: "/open_link{\"link\": \"http://localhost:8080/ripristino_backup_android.html\"}"
+        - title: "IMPOSTAZIONI FABBRICA"
+          payload: "/open_link{\"link\": \"http://localhost:8080/impostazioni_fabbrica_android.html\"}"
+        - title: "CONFIGURA ANDROID"
+          payload: "/open_link{\"link\": \"http://localhost:8080/configura_android_internet.html\"}"
 
 actions:
   - action_query_brands
@@ -95,4 +129,5 @@ actions:
   - action_query_devices_by_attribute_value_2
   - action_return_menu
   - action_reset_slots
+  - open_link
 
