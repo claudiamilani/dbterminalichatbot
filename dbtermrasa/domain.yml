@@ -70,10 +70,10 @@ responses:
     - text: "Seleziona una categoria per visualizzare i relativi attributi."
 
   utter_ask_model_category:
-    - text: "Inserisci il comando nel formato: 'Ricerca_modelli: modello|categoria'."
+    - text: "Inserisci il comando nel formato: 'Ricerca_attributi: modello|categoria'."
 
   utter_ask_attribute_value_2:
-    - text: "Inserisci il comando nel formato: 'Ricerca_attributi: attributo|valore'."
+    - text: "Inserisci il comando nel formato: 'Ricerca_modelli: attributo|valore'."
 
   utter_assistance:
     - text: "Per assistenza telefonino, contatta il nostro supporto al numero 800-123456 o visita il nostro sito."

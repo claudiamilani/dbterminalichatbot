@@ -196,7 +196,7 @@ class ActionQueryAttributesByCategory(Action):
                         )
                     else:
                         dispatcher.utter_message(
-                            text=f"Nessun attributo trovato per '{category_raw}'. Puoi scrivere ad esempio: 'Vorrei vedere gli attributi di cpu'."
+                            text=f"Nessun dato trovato per '{category_raw}'. Puoi scrivere ad esempio: 'Vorrei vedere gli attributi di cpu' oppure 'Vorrei vedere i modelli di OPPO'."
                         )
         except Exception as e:
             logger.exception("Errore attributi per categoria")
@@ -211,14 +211,14 @@ class ActionQueryAttributesByModelAndCategory(Action):
         text = tracker.latest_message.get("text", "").strip()
         logger.debug(f"Testo ricevuto: {text}")
 
-        if not text or "Ricerca_modelli:" not in text:
-            dispatcher.utter_message(text="Per favore scrivi nel formato: 'Ricerca_modelli: modello|categoria'")
+        if not text or "Ricerca_attributi:" not in text:
+            dispatcher.utter_message(text="Per favore scrivi nel formato: 'Ricerca_attributi: modello|categoria'")
             return []
 
-        text = text.replace("Ricerca_modelli:", "").strip()
+        text = text.replace("Ricerca_attributi:", "").strip()
 
         if "|" not in text:
-            dispatcher.utter_message(text="Formato riconosciuto: 'Ricerca_modelli: modello|categoria'")
+            dispatcher.utter_message(text="Formato riconosciuto: 'Ricerca_attributi: modello|categoria'")
             return []
 
         model_raw, category_raw = [p.strip() for p in text.split("|", 1)]
@@ -265,14 +265,14 @@ class ActionQueryDevicesByAttributeValue2(Action):
         logger.info("Esecuzione ActionQueryDevicesByAttributeValue2...")
         text = tracker.latest_message.get("text", "").strip()
 
-        if not text or "Ricerca_attributi:" not in text:
-            dispatcher.utter_message(text="Per favore scrivi nel formato: 'Ricerca_attributi: attributo|valore'")
+        if not text or "Ricerca_modelli:" not in text:
+            dispatcher.utter_message(text="Per favore scrivi nel formato: 'Ricerca_modelli: attributo|valore'")
             return []
 
-        text = text.replace("Ricerca_attributi:", "").strip()
+        text = text.replace("Ricerca_modelli:", "").strip()
 
         if "|" not in text:
-            dispatcher.utter_message(text="Formato riconosciuto: 'Ricerca_attributi: attributo|valore'")
+            dispatcher.utter_message(text="Formato riconosciuto: 'Ricerca_modelli: attributo|valore'")
             return []
 
         attribute_desc_raw, attribute_val_raw = [p.strip() for p in text.split("|", 1)]

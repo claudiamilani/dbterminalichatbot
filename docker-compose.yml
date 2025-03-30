@@ -118,7 +118,7 @@ services:
       - ./dbtermrasa:/app
     ports:
       - "5005:5005"  
-    entrypoint: ["sh", "-c", "echo 'Attendo 5 secondi prima di avviare Rasa...'; sleep 5; rasa run --enable-api --model /app/models/20250330-131020-concave-muntin.tar.gz --cors '*' --debug"]
+    entrypoint: ["sh", "-c", "echo 'Attendo 5 secondi prima di avviare Rasa...'; sleep 5; rasa run --enable-api --model /app/models/20250330-161718-rude-retriever.tar.gz --cors '*' --debug"]
     depends_on:
       - pgsql
       - redis
