@@ -1,65 +1,70 @@
 version: "3.1"
 
 stories:
-  - story: Greeting and request brands
-    steps:
-      - intent: greet
-      - action: utter_greet
-      - intent: request_brands
-      - action: action_query_brands
 
-  - story: Select brand and view models
-    steps:
-      - intent: select_brand
-      - action: action_query_models
-      - action: action_reset_slots
-      - action: action_return_menu
+- story: Greeting and choose path
+  steps:
+    - intent: greet
+    - action: utter_greet
 
-  - story: Request Categories
-    steps:
-      - intent: request_categories
-      - action: action_query_categories
-      - action: utter_ask_select_category
-      - action: action_listen
-      - intent: select_category
-      - action: action_query_attributes_by_category
+- story: Request brands and select brand
+  steps:
+    - intent: request_brands
+    - action: action_query_brands
+    - intent: select_brand
+    - action: action_query_models
 
-  - story: Model and category search (generic flow)
-    steps:
-      - intent: model_category_search
-      - action: utter_ask_model_category
-      - action: action_listen
-      - action: action_query_attributes_by_model_and_category
-      - action: action_reset_slots
-      - action: action_return_menu
+- story: Request categories and attributes
+  steps:
+    - intent: request_categories
+    - action: action_query_categories
+    - action: utter_ask_select_category
+    - action: action_listen
+    - intent: select_category
+    - action: action_query_attributes_by_category
 
-  - story: Attribute value search (generic flow)
-    steps:
-      - intent: attribute_value_search
-      - action: utter_ask_attribute_value_2
-      - action: action_listen
-      - action: action_query_devices_by_attribute_value_2
-      - action: action_reset_slots
-      - action: action_return_menu
+- story: Model and category search - prompted
+  steps:
+    - intent: model_category_search_prompted
+    - action: utter_ask_model_category
+    - action: action_listen
+    - intent: model_category_search_direct
+    - action: action_query_attributes_by_model_and_category
+    - action: action_reset_slots
 
-  - story: Comando diretto modello|categoria
-    steps:
-      - intent: model_category_search
-      - action: action_query_attributes_by_model_and_category
-      - action: action_reset_slots
-      - action: action_return_menu
+- story: Attribute and value search - prompted
+  steps:
+    - intent: attribute_value_search_prompted
+    - action: utter_ask_attribute_value_2
+    - action: action_listen
+    - intent: attribute_value_search_direct
+    - action: action_query_devices_by_attribute_value_2
+    - action: action_reset_slots
 
-  - story: Comando diretto attributo|valore
-    steps:
-      - intent: attribute_value_search
-      - action: action_query_devices_by_attribute_value_2
-      - action: action_reset_slots
-      - action: action_return_menu
+- story: Continue search from model|category
+  steps:
+    - intent: model_category_search_direct
+    - action: action_query_attributes_by_model_and_category
+    - action: action_reset_slots
 
-  - story: Request Assistance
-    steps:
-      - intent: request_assistance
-      - action: utter_assistance
-      - action: action_reset_slots
-      - action: action_return_menu
+- story: Continue search from attribute|value
+  steps:
+    - intent: attribute_value_search_direct
+    - action: action_query_devices_by_attribute_value_2
+    - action: action_reset_slots
 
+- story: Request assistance
+  steps:
+    - intent: request_assistance
+    - action: utter_assistance
+    - action: action_return_menu
+
+- story: Return to menu
+  steps:
+    - intent: return_to_menu
+    - action: action_return_menu
+
+- story: Menù di ricerca dopo continua ricerca
+  steps:
+    - intent: continue_research_menu
+    - action: utter_continue_research_menu

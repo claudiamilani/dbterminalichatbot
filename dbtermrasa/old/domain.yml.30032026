@@ -1,0 +1,82 @@
+version: "3.1"
+
+intents:
+  - greet
+  - request_brands
+  - request_categories
+  - request_assistance
+  - select_brand
+  - select_category
+  - model_category_search
+  - attribute_value_search
+
+entities:
+  - brand_raw
+  - category_raw
+  - attribute_desc_raw
+  - attribute_val_raw
+  - model_category_search_raw
+  - attribute_value_search_raw
+
+slots:
+  brand_raw:
+    type: any
+    mappings:
+      - type: from_text
+  category_raw:
+    type: any
+    mappings:
+      - type: from_text
+  attribute_desc_raw:
+    type: any
+    mappings:
+      - type: from_text
+  attribute_val_raw:
+    type: any
+    mappings:
+      - type: from_text
+  model_category_search_raw:
+    type: any
+    mappings:
+      - type: from_text
+  attribute_value_search_raw:
+    type: any
+    mappings:
+      - type: from_text
+
+responses:
+  utter_greet:
+    - text: "Ciao, sono il tuo assistente personale. Posso esserti utile per:"
+      buttons:
+        - title: "Marche e modelli più venduti"
+          payload: "/request_brands"
+        - title: "Caratteristiche tecniche"
+          payload: "/request_categories"
+        - title: "Assistenza telefonino"
+          payload: "/request_assistance"
+
+  utter_fallback:
+    - text: "Scusa, non ho capito. Puoi ripetere?"
+
+  utter_ask_select_category:
+    - text: "Seleziona una categoria per visualizzare i relativi attributi."
+
+  utter_ask_model_category:
+    - text: "Inserisci il comando nel formato: 'Ricerca_modelli: modello|categoria'."
+
+  utter_ask_attribute_value_2:
+    - text: "Inserisci il comando nel formato: 'Ricerca_attributi: attributo|valore'."
+
+  utter_assistance:
+    - text: "Per assistenza telefonino, contatta il nostro supporto al numero 800-123456 o visita il nostro sito."
+
+actions:
+  - action_query_brands
+  - action_query_models
+  - action_query_categories
+  - action_query_attributes_by_category
+  - action_query_attributes_by_model_and_category
+  - action_query_devices_by_attribute_value_2
+  - action_return_menu
+  - action_reset_slots
+

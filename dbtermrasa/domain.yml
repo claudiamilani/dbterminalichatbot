@@ -7,8 +7,12 @@ intents:
   - request_assistance
   - select_brand
   - select_category
-  - model_category_search
-  - attribute_value_search
+  - model_category_search_prompted
+  - model_category_search_direct
+  - attribute_value_search_prompted
+  - attribute_value_search_direct
+  - return_to_menu
+  - continue_research_menu
 
 entities:
   - brand_raw
@@ -43,6 +47,10 @@ slots:
     type: any
     mappings:
       - type: from_text
+  model_raw:
+    type: any
+    mappings:
+      - type: from_text
 
 responses:
   utter_greet:
@@ -69,6 +77,14 @@ responses:
 
   utter_assistance:
     - text: "Per assistenza telefonino, contatta il nostro supporto al numero 800-123456 o visita il nostro sito."
+
+  utter_continue_research_menu:
+    - text: "Vuoi continuare con una ricerca specifica?"
+      buttons:
+        - title: "Attributi per categoria per modello"
+          payload: "/model_category_search_prompted"
+        - title: "Cercare modelli per attributo"
+          payload: "/attribute_value_search_prompted"
 
 actions:
   - action_query_brands

@@ -33,13 +33,13 @@ class ActionQueryBrands(Action):
         try:
             with db_connect() as conn:
                 with conn.cursor() as cursor:
-                    query = """
+                    query = '''
                         SELECT DISTINCT(V.NAME)
                         FROM TERMINALS T
                         JOIN VENDORS V ON T.VENDOR_ID = V.ID
                         WHERE T.PUBLISHED = TRUE AND T.CERTIFIED = TRUE AND V.PUBLISHED = TRUE
                         ORDER BY V.NAME;
-                    """
+                    '''
                     logger.debug(f"Query marche: {query}")
                     cursor.execute(query)
                     brands = cursor.fetchall()
@@ -65,13 +65,13 @@ class ActionQueryModels(Action):
         try:
             with db_connect() as conn:
                 with conn.cursor() as cursor:
-                    query_brands = """
+                    query_brands = '''
                         SELECT DISTINCT(V.NAME)
                         FROM TERMINALS T
                         JOIN VENDORS V ON T.VENDOR_ID = V.ID
                         WHERE T.PUBLISHED = TRUE AND T.CERTIFIED = TRUE AND V.PUBLISHED = TRUE
                         ORDER BY V.NAME;
-                    """
+                    '''
                     cursor.execute(query_brands)
                     brand_list = [r[0] for r in cursor.fetchall()]
                     logger.debug(f"Brand disponibili: {brand_list}")
@@ -85,14 +85,15 @@ class ActionQueryModels(Action):
             if best:
                 brand_raw = best[0]
                 dispatcher.utter_message(text=f"Forse cercavi: {brand_raw}")
+                return []
             else:
-                dispatcher.utter_message(text=f"Nessuna marca simile a '{brand_raw}' trovata.")
+                dispatcher.utter_message(text="Marca non trovata. Prova a sceglierne un'altra dicendo ad esempio: 'Vorrei vedere i modelli di MARCA'.")
                 return []
 
         try:
             with db_connect() as conn:
                 with conn.cursor() as cursor:
-                    query_models = """
+                    query_models = '''
                         SELECT T.NAME
                         FROM TERMINALS T
                         JOIN VENDORS V ON T.VENDOR_ID = V.ID
@@ -102,7 +103,7 @@ class ActionQueryModels(Action):
                         GROUP BY T.NAME
                         ORDER BY COUNT(TA.VALUE) DESC
                         LIMIT 15;
-                    """
+                    '''
                     logger.debug(f"Query modelli per brand: {query_models} | Param: {brand_raw}")
                     cursor.execute(query_models, (brand_raw,))
                     models = cursor.fetchall()
@@ -110,12 +111,14 @@ class ActionQueryModels(Action):
                     if models:
                         msg = f"Modelli più venduti per {brand_raw}:\n" + "\n".join(f"- {m[0]}" for m in models)
                         dispatcher.utter_message(text=msg)
+                        return [FollowupAction("action_return_menu")]
                     else:
-                        dispatcher.utter_message(text=f"Nessun modello trovato per {brand_raw}.")
+                        dispatcher.utter_message(text=f"Nessun modello trovato per '{brand_raw}'. Puoi scrivere ad esempio: 'Vorrei vedere i modelli di Samsung'.")
+                        return []
         except Exception as e:
             logger.exception("Errore modelli")
             dispatcher.utter_message(text=f"Errore DB: {e}")
-        return [FollowupAction("action_reset_slots"), FollowupAction("action_return_menu")]
+        return []
 
 class ActionQueryCategories(Action):
     def name(self): return "action_query_categories"
@@ -125,7 +128,7 @@ class ActionQueryCategories(Action):
         try:
             with db_connect() as conn:
                 with conn.cursor() as cursor:
-                    query = """
+                    query = '''
                         SELECT DISTINCT(AC.NAME)
                         FROM TERMINALS T
                         JOIN ATTRIBUTE_VALUES AV ON T.ID = AV.TERMINAL_ID
@@ -133,7 +136,7 @@ class ActionQueryCategories(Action):
                         JOIN ATTR_CATEGORIES AC ON A.ATTR_CATEGORY_ID = AC.ID
                         WHERE T.PUBLISHED = TRUE AND T.CERTIFIED = TRUE AND A.PUBLISHED = TRUE
                         ORDER BY AC.NAME;
-                    """
+                    '''
                     logger.debug(f"Query categorie: {query}")
                     cursor.execute(query)
                     cats = cursor.fetchall()
@@ -166,7 +169,7 @@ class ActionQueryAttributesByCategory(Action):
         try:
             with db_connect() as conn:
                 with conn.cursor() as cursor:
-                    query = """
+                    query = '''
                         SELECT DISTINCT A.DESCRIPTION, AV.VALUE
                         FROM TERMINALS T
                         JOIN ATTRIBUTE_VALUES AV ON T.ID = AV.TERMINAL_ID
@@ -175,7 +178,7 @@ class ActionQueryAttributesByCategory(Action):
                         WHERE T.PUBLISHED = TRUE AND T.CERTIFIED = TRUE AND A.PUBLISHED = TRUE
                           AND AC.NAME ILIKE %s
                         ORDER BY A.DESCRIPTION;
-                    """
+                    '''
                     logger.debug(f"Query attributi per categoria: {query} | Param: {category_raw}")
                     cursor.execute(query, (category_raw,))
                     results = cursor.fetchall()
@@ -183,20 +186,21 @@ class ActionQueryAttributesByCategory(Action):
                     if results:
                         msg = f"Ecco gli attributi per '{category_raw}':\n" + "\n".join(f"- {desc}: {val}" for desc, val in results)
                         dispatcher.utter_message(text=msg)
+
+                        dispatcher.utter_message(
+                            text="Vuoi continuare con una ricerca specifica?",
+                            buttons=[
+                                {"title": "Attributi per categoria per modello", "payload": "/model_category_search_prompted"},
+                                {"title": "Cercare modelli per attributo", "payload": "/attribute_value_search_prompted"},
+                            ]
+                        )
                     else:
-                        dispatcher.utter_message(text=f"Nessun attributo trovato per '{category_raw}'.")
+                        dispatcher.utter_message(
+                            text=f"Nessun attributo trovato per '{category_raw}'. Puoi scrivere ad esempio: 'Vorrei vedere gli attributi di cpu'."
+                        )
         except Exception as e:
             logger.exception("Errore attributi per categoria")
             dispatcher.utter_message(text=f"Errore DB: {e}")
-            return []
-
-        dispatcher.utter_message(
-            text="Vuoi continuare con una ricerca per modello+categoria o per attributo=valore?",
-            buttons=[
-                {"title": "Modello|Categoria", "payload": "/model_category_search"},
-                {"title": "Attributo=Valore", "payload": "/attribute_value_search"},
-            ]
-        )
         return []
 
 class ActionQueryAttributesByModelAndCategory(Action):
@@ -204,17 +208,25 @@ class ActionQueryAttributesByModelAndCategory(Action):
 
     def run(self, dispatcher, tracker, domain):
         logger.info("Esecuzione ActionQueryAttributesByModelAndCategory...")
-        text = tracker.latest_message.get("text", "").strip().replace("Ricerca_modelli:", "").strip()
+        text = tracker.latest_message.get("text", "").strip()
         logger.debug(f"Testo ricevuto: {text}")
-        if "|" not in text:
-            dispatcher.utter_message(text="Formato non valido. Usa: Ricerca_modelli: modello|categoria")
+
+        if not text or "Ricerca_modelli:" not in text:
+            dispatcher.utter_message(text="Per favore scrivi nel formato: 'Ricerca_modelli: modello|categoria'")
             return []
+
+        text = text.replace("Ricerca_modelli:", "").strip()
+
+        if "|" not in text:
+            dispatcher.utter_message(text="Formato riconosciuto: 'Ricerca_modelli: modello|categoria'")
+            return []
+
         model_raw, category_raw = [p.strip() for p in text.split("|", 1)]
 
         try:
             with db_connect() as conn:
                 with conn.cursor() as cursor:
-                    query = """
+                    query = '''
                         SELECT DISTINCT A.DESCRIPTION, AV.VALUE
                         FROM TERMINALS T
                         JOIN ATTRIBUTE_VALUES AV ON T.ID = AV.TERMINAL_ID
@@ -223,7 +235,7 @@ class ActionQueryAttributesByModelAndCategory(Action):
                         WHERE T.PUBLISHED = TRUE AND T.CERTIFIED = TRUE AND A.PUBLISHED = TRUE
                           AND AC.NAME ILIKE %s AND T.NAME ILIKE %s
                         ORDER BY A.DESCRIPTION;
-                    """
+                    '''
                     logger.debug(f"Query per modello e categoria: {query} | Param: {category_raw}, %{model_raw}%")
                     cursor.execute(query, (category_raw, f"%{model_raw}%"))
                     results = cursor.fetchall()
@@ -236,24 +248,39 @@ class ActionQueryAttributesByModelAndCategory(Action):
         except Exception as e:
             logger.exception("Errore attributi per modello+categoria")
             dispatcher.utter_message(text=f"Errore DB: {e}")
-        return [FollowupAction("action_reset_slots"), FollowupAction("action_return_menu")]
 
+        dispatcher.utter_message(
+            text="Vuoi continuare la ricerca o tornare al menù?",
+            buttons=[
+                {"title": "Continua ricerca", "payload": "/continue_research_menu"},
+                {"title": "Menù principale", "payload": "/return_to_menu"}
+                    ]   
+                )
+
+        return [FollowupAction("action_reset_slots")]
 class ActionQueryDevicesByAttributeValue2(Action):
     def name(self): return "action_query_devices_by_attribute_value_2"
 
     def run(self, dispatcher, tracker, domain):
         logger.info("Esecuzione ActionQueryDevicesByAttributeValue2...")
-        text = tracker.latest_message.get("text", "").strip().replace("Ricerca_attributi:", "").strip()
-        logger.debug(f"Testo ricevuto: {text}")
-        if "|" not in text:
-            dispatcher.utter_message(text="Formato non valido. Usa: Ricerca_attributi: attributo|valore")
+        text = tracker.latest_message.get("text", "").strip()
+
+        if not text or "Ricerca_attributi:" not in text:
+            dispatcher.utter_message(text="Per favore scrivi nel formato: 'Ricerca_attributi: attributo|valore'")
             return []
+
+        text = text.replace("Ricerca_attributi:", "").strip()
+
+        if "|" not in text:
+            dispatcher.utter_message(text="Formato riconosciuto: 'Ricerca_attributi: attributo|valore'")
+            return []
+
         attribute_desc_raw, attribute_val_raw = [p.strip() for p in text.split("|", 1)]
 
         try:
             with db_connect() as conn:
                 with conn.cursor() as cursor:
-                    query = """
+                    query = '''
                         SELECT DISTINCT T.NAME
                         FROM TERMINALS T
                         JOIN ATTRIBUTE_VALUES AV ON T.ID = AV.TERMINAL_ID
@@ -262,7 +289,7 @@ class ActionQueryDevicesByAttributeValue2(Action):
                         WHERE T.PUBLISHED = TRUE AND T.CERTIFIED = TRUE AND A.PUBLISHED = TRUE
                           AND A.DESCRIPTION ILIKE %s AND AV.VALUE ILIKE %s
                         ORDER BY T.NAME;
-                    """
+                    '''
                     logger.debug(f"Query per attributo=valore: {query} | Param: {attribute_desc_raw}, {attribute_val_raw}")
                     cursor.execute(query, (attribute_desc_raw, attribute_val_raw))
                     results = cursor.fetchall()
@@ -275,7 +302,16 @@ class ActionQueryDevicesByAttributeValue2(Action):
         except Exception as e:
             logger.exception("Errore attributi=valore")
             dispatcher.utter_message(text=f"Errore DB: {e}")
-        return [FollowupAction("action_reset_slots"), FollowupAction("action_return_menu")]
+
+        dispatcher.utter_message(
+        text="Vuoi continuare la ricerca o tornare al menù?",
+        buttons=[
+            {"title": "Continua ricerca", "payload": "/continue_research_menu"},
+            {"title": "Menù principale", "payload": "/return_to_menu"}
+                ]
+            )
+
+        return [FollowupAction("action_reset_slots")]
 
 class ActionResetSlots(Action):
     def name(self): return "action_reset_slots"
