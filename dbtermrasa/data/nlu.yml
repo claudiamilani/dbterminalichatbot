@@ -33,7 +33,8 @@ nlu:
       - [Apple](brand_raw)
       - [Oppo](brand_raw)
       - Mostrami [Xiaomi](brand_raw)
-      - Vorrei vedere i modelli di [Xiaomi](brand_raw)
+      - Vorrei vedere i modelli di [Oppo](brand_raw)
+      - Vorrei vedere i modelli di [Samsung](brand_raw)
 
   - intent: select_category
     examples: |

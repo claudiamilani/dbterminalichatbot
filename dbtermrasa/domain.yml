@@ -28,35 +28,49 @@ entities:
 
 slots:
   brand_raw:
-    type: any
+    type: text
     mappings:
-      - type: from_text
+      - type: from_entity
+        entity: brand_raw
+
   category_raw:
-    type: any
+    type: text
     mappings:
-      - type: from_text
+      - type: from_entity
+        entity: category_raw
+
   attribute_desc_raw:
-    type: any
+    type: text
     mappings:
-      - type: from_text
+      - type: from_entity
+        entity: attribute_desc_raw
+
   attribute_val_raw:
-    type: any
+    type: text
     mappings:
-      - type: from_text
+      - type: from_entity
+        entity: attribute_val_raw
+
   model_category_search_raw:
-    type: any
+    type: text
     mappings:
-      - type: from_text
+      - type: from_entity
+        entity: model_category_search_raw
+
   attribute_value_search_raw:
-    type: any
+    type: text
     mappings:
-      - type: from_text
+      - type: from_entity
+        entity: attribute_value_search_raw
+
   model_raw:
-    type: any
+    type: text
     mappings:
-      - type: from_text
+      - type: from_entity
+        entity: model_raw
+
   link:
-    type: any
+    type: text
     mappings:
       - type: from_entity
         entity: link
