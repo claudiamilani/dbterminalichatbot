@@ -40,9 +40,13 @@ nlu:
     examples: |
       - Mostrami la categoria [display](category_raw)
       - [os](category_raw)
+      - [otas](category_raw)
+      - [memory](category_raw)
       - [dimensions](category_raw)
       - [networking](category_raw)
       - [camera](category_raw)
+      - [connectivity](category_raw)
+      - [communications](category_raw)
       - Vorrei vedere gli attributi di [cpu](category_raw)
       - Voglio i dettagli della categoria [fotocamera](category_raw)
 
@@ -111,3 +115,4 @@ nlu:
       - Mostra la guida
       - Vai alla guida
       - Voglio vedere questa pagina
+
