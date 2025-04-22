@@ -29,11 +29,11 @@
 3. **Connessione al database PostgreSQL
 
 	a. Apri pgAdmin  
-	b. Clic destro su **Servers > Register > Server…**
+	b. Clic destro su **Servers > Register > Server…** 
 	c. **Scheda “General”**  
    		- **Name:** `dbterminali`  
 
-	d. **Scheda “Connection”**
+	d. **Scheda “Connection”**  
    		- **Host name/address:**  
      		- Se usi pgAdmin localmente: `localhost`
    		- **Port:** `5432`
